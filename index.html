@@ -1,0 +1,2369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finance Automation Journey</title>
+
+<style>
+:root {
+  --bg: #f7f3ea;
+  --navy: #081f3a;
+  --text: #111827;
+  --muted: #64748b;
+  --active: #4B6F2A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at 20% 0%, #fff8e8, #f2efe8 45%, #dfe7ef);
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding: 0;
+  background: #111827;
+}
+
+.page.has-selection {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 34vw) minmax(680px, 1fr);
+  gap: 20px;
+  padding: 24px;
+  align-items: stretch;
+  background: radial-gradient(circle at 20% 0%, #fff8e8, #f2efe8 45%, #dfe7ef);
+}
+
+.page.area-overview {
+  grid-template-columns: minmax(560px, 1fr) minmax(440px, 720px);
+}
+
+.page.area-overview .pain-list {
+  width: 100%;
+}
+
+.visual,
+.panel {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(15,23,42,.20);
+  min-height: 920px;
+  background: white;
+}
+
+.page:not(.has-selection) .visual {
+  width: 100vw;
+  min-height: max(100vh, 1080px);
+  border-radius: 0;
+  box-shadow: none;
+  background:
+    linear-gradient(90deg, rgba(8,31,58,.50), rgba(8,31,58,.12) 44%, rgba(255,255,255,.08)),
+    linear-gradient(90deg, #87919c 0%, #b9b5ad 37%, #ead7bf 67%, #f4dcc3 100%);
+}
+
+.page:not(.has-selection) .visual::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: url("empire_state_finance_building.png");
+  background-size: auto clamp(980px, 180vh, 1700px);
+  background-position: center top;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 19%, #000 81%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 19%, #000 81%, transparent 100%);
+  pointer-events: none;
+}
+
+.page.has-selection .visual,
+.page.has-selection .panel {
+  min-height: calc(100vh - 48px);
+  max-height: calc(100vh - 48px);
+}
+
+.page.has-selection .visual {
+  width: auto;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(15,23,42,.20);
+}
+
+.page.has-selection .panel {
+  display: flex;
+  overflow: auto;
+}
+
+.visual {
+  position: relative;
+  background-image:
+    linear-gradient(90deg, rgba(8,31,58,.58), rgba(8,31,58,.14) 45%, rgba(255,255,255,0)),
+    url("empire_state_finance_building.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+.intro {
+  position: absolute;
+  z-index: 3;
+  left: 30px;
+  top: 22px;
+  width: 385px;
+  color: white;
+  text-shadow: 0 2px 12px rgba(0,0,0,.45);
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: 34px;
+  line-height: .98;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.intro p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.35;
+  color: rgba(255,255,255,.92);
+}
+
+.main-steps {
+  position: absolute;
+  z-index: 13;
+  right: 42px;
+  top: 42px;
+  width: 430px;
+  display: grid;
+  gap: 12px;
+  color: #0f172a;
+}
+
+.page.has-selection .main-steps {
+  display: none;
+}
+
+.suggestion-card {
+  position: absolute;
+  z-index: 13;
+  right: 42px;
+  top: 300px;
+  width: 430px;
+  border: 1px solid rgba(255,255,255,.66);
+  border-radius: 18px;
+  background: rgba(255,255,255,.91);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  padding: 16px;
+  box-shadow: 0 16px 42px rgba(15,23,42,.18);
+  color: #0f172a;
+}
+
+.page.has-selection .suggestion-card {
+  display: none;
+}
+
+.suggestion-card strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 1000;
+}
+
+.suggestion-card p {
+  margin: 6px 0 12px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #475569;
+}
+
+.suggestion-button {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: #081f3a;
+  color: white;
+  padding: 11px 13px;
+  font-size: 13px;
+  font-weight: 1000;
+  letter-spacing: .4px;
+  cursor: pointer;
+}
+
+.suggestion-button:hover {
+  filter: brightness(1.08);
+}
+
+.main-step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: start;
+  border: 1px solid rgba(255,255,255,.66);
+  border-radius: 15px;
+  background: rgba(255,255,255,.88);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  padding: 11px 13px;
+  box-shadow: 0 10px 28px rgba(15,23,42,.18);
+}
+
+.main-step span {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #081f3a;
+  color: white;
+  font-weight: 1000;
+  font-size: 14px;
+}
+
+.main-step strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.1;
+  color: #0f172a;
+  font-weight: 1000;
+}
+
+.main-step p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  line-height: 1.28;
+  color: #334155;
+}
+
+.floor-stack {
+  position: absolute;
+  z-index: 12;
+  left: 34px;
+  top: 220px;
+  width: min(64vw, 500px);
+  display: grid;
+  gap: 10px;
+}
+
+.floor-button {
+  min-height: 56px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-left: 14px solid var(--area-color);
+  border-radius: 18px;
+  background: rgba(255,255,255,.88);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 22px;
+  font-size: 25px;
+  font-weight: 800;
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(15,23,42,.18);
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.floor-button::before {
+  content: "";
+  width: 23px;
+  height: 23px;
+  border-radius: 999px;
+  background: var(--area-color);
+  flex: 0 0 auto;
+}
+
+.floor-button:hover,
+.floor-button.active {
+  transform: translateX(10px);
+  background: white;
+  box-shadow: 0 16px 40px rgba(15,23,42,.30);
+}
+
+.finance-base {
+  width: 100%;
+  max-width: 340px;
+  border-radius: 14px;
+  background: #081f3a;
+  color: white;
+  padding: 13px 16px;
+  font-size: 13px;
+  font-weight: 1000;
+  text-align: center;
+  letter-spacing: .9px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.36);
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.finance-base:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+.panel {
+  position: relative;
+  border-radius: 28px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 24px 70px rgba(15,23,42,.16);
+  padding: 34px;
+  overflow: hidden;
+  min-height: 920px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel.hidden {
+  display: none;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background: var(--active);
+}
+
+.kicker {
+  margin-top: 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.7px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.panel h2 {
+  margin: 12px 0 6px;
+  font-size: 42px;
+  line-height: 1;
+  color: var(--navy);
+  letter-spacing: -1.2px;
+}
+
+.panel .subtitle {
+  margin: 0 0 24px;
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #475569;
+  font-weight: 900;
+}
+
+.pain-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 610px;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.pain-button {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: white;
+  text-align: left;
+  padding: 13px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  color: #0f172a;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(15,23,42,.04);
+  transition: border .15s ease, transform .15s ease, background .15s ease;
+}
+
+.pain-button::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  margin-top: 5px;
+  background: var(--active);
+  flex: 0 0 auto;
+}
+
+.pain-button:hover,
+.pain-button.active {
+  border-color: var(--active);
+  background: #f8fafc;
+  transform: translateX(4px);
+}
+
+.pain-button.unlocked {
+  border-color: #22c55e;
+  background: #dcfce7;
+  box-shadow: 0 6px 18px rgba(34,197,94,.18);
+}
+
+.pain-button.unlocked::before {
+  background: #16a34a;
+}
+
+.pain-button.unlocked:hover,
+.pain-button.unlocked.active {
+  border-color: #15803d;
+  background: #bbf7d0;
+  box-shadow: 0 8px 22px rgba(34,197,94,.24);
+}
+
+.pain-button.locked {
+  color: #475569;
+}
+
+.pain-button.locked::after {
+  content: "Locked";
+  margin-left: auto;
+  border: 1px solid #dbe3ef;
+  border-radius: 999px;
+  padding: 3px 8px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.detail-card {
+  border: 1px solid #dbe3ef;
+  border-radius: 22px;
+  background: linear-gradient(180deg, white 0%, #f8fafc 100%);
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+  max-width: 100%;
+  min-width: 0;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  border: 1px solid var(--active);
+  background: white;
+  color: var(--active);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.detail-label {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  font-weight: 900;
+}
+
+.detail-main {
+  margin: 0 0 18px;
+  font-size: 25px;
+  line-height: 1.1;
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.detail-box {
+  border-left: 5px solid var(--active);
+  background: white;
+  border-radius: 12px;
+  padding: 13px 14px;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-top: 12px;
+  min-width: 0;
+}
+
+.detail-box h4 {
+  margin: 0 0 5px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  color: #475569;
+}
+
+.detail-box p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.42;
+  color: #111827;
+}
+
+.detail-box p + p {
+  margin-top: 10px;
+}
+
+.proposal-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 7px;
+}
+
+.proposal-list li,
+.proposal-links a {
+  font-size: 15px;
+  line-height: 1.38;
+  color: #111827;
+}
+
+.proposal-links {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.proposal-links a {
+  color: var(--active);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.proposal-links a:hover {
+  text-decoration: underline;
+}
+
+.output-page-button {
+  border: 0;
+  background: transparent;
+  color: var(--active);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  padding: 0;
+  text-align: left;
+}
+
+.output-page-button:hover {
+  text-decoration: underline;
+}
+
+.output-page-disabled {
+  color: #64748b;
+  font-weight: 900;
+}
+
+.output-page-status {
+  display: inline-block;
+  margin-left: 6px;
+  border: 1px solid #dbe3ef;
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.proposal-preview {
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  display: block;
+  cursor: zoom-in;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.proposal-preview-link {
+  display: block;
+  position: relative;
+}
+
+.proposal-preview-link::after {
+  content: "Open dashboard preview";
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  border-radius: 999px;
+  background: rgba(8,31,58,.92);
+  color: white;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(15,23,42,.25);
+  pointer-events: none;
+}
+
+.proposal-preview:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15,23,42,.12);
+}
+
+.image-modal {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(8,31,58,.74);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.image-modal.hidden {
+  display: none;
+}
+
+.image-modal img {
+  max-width: min(1180px, 94vw);
+  max-height: 88vh;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 30px 90px rgba(0,0,0,.42);
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 999px;
+  background: rgba(255,255,255,.92);
+  color: #081f3a;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(0,0,0,.24);
+}
+
+.locked-card {
+  border-left-color: #94a3b8;
+}
+
+.locked-card p {
+  color: #475569;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tool-pill {
+  border: 1px solid #dbe3ef;
+  border-radius: 999px;
+  background: #f8fafc;
+  padding: 8px 11px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.footer-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.panel-footer {
+  margin-top: auto;
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  body {
+    background: #edf2f7;
+  }
+
+  .page {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 12px;
+    background: #edf2f7;
+  }
+
+  .page.has-selection {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .visual,
+  .panel {
+    min-height: auto;
+    max-height: none;
+    border-radius: 22px;
+  }
+
+  .visual {
+    width: 100%;
+    height: 1480px;
+    min-height: 1480px;
+    background-position: center top;
+  }
+
+  .page:not(.has-selection) .visual {
+    width: 100%;
+  }
+
+  .main-steps {
+    left: 18px;
+    right: 18px;
+    top: 128px;
+    width: auto;
+    gap: 10px;
+  }
+
+  .suggestion-card {
+    left: 18px;
+    right: 18px;
+    top: 1248px;
+    width: auto;
+  }
+
+  .floor-stack {
+    left: 18px;
+    right: 18px;
+    width: auto;
+    top: 404px;
+    gap: 8px;
+  }
+
+  .floor-button {
+    min-height: 48px;
+    border-left-width: 10px;
+    border-radius: 16px;
+    gap: 12px;
+    padding: 10px 14px;
+    font-size: 17px;
+    line-height: 1.15;
+  }
+
+  .floor-button::before {
+    width: 18px;
+    height: 18px;
+  }
+
+  .page.has-selection .visual {
+    height: 760px;
+    min-height: 760px;
+    max-height: none;
+    border-radius: 22px;
+  }
+
+  .page.has-selection .floor-stack {
+    top: 146px;
+  }
+
+  .page.has-selection .panel {
+    position: relative;
+    z-index: 1;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-height: none;
+    min-height: 0;
+    border-radius: 22px;
+    padding: 24px;
+    overflow: visible;
+  }
+
+  .page.has-selection .panel-footer {
+    margin-top: 20px;
+  }
+
+  .pain-list {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .finance-base {
+    max-width: none;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 620px) {
+  .page {
+    padding: 8px;
+  }
+
+  .intro {
+    left: 18px;
+    right: 18px;
+    top: 18px;
+    width: auto;
+  }
+
+  .intro h1 {
+    font-size: 28px;
+    letter-spacing: 0;
+  }
+
+  .intro p {
+    font-size: 13px;
+    max-width: 280px;
+  }
+
+  .main-steps {
+    top: 126px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .main-step {
+    grid-template-columns: 30px 1fr;
+    padding: 10px;
+  }
+
+  .main-step span {
+    width: 26px;
+    height: 26px;
+  }
+
+  .main-step strong {
+    font-size: 13px;
+  }
+
+  .main-step p {
+    font-size: 12px;
+  }
+
+  .suggestion-card {
+    top: 1228px;
+    left: 12px;
+    right: 12px;
+    padding: 13px;
+  }
+
+  .floor-stack {
+    top: 394px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .visual {
+    height: 1460px;
+    min-height: 1460px;
+    border-radius: 18px;
+  }
+
+  .page.has-selection .visual {
+    height: 700px;
+    min-height: 700px;
+  }
+
+  .page.has-selection .floor-stack {
+    top: 132px;
+  }
+
+  .panel h2 {
+    font-size: 30px;
+    letter-spacing: 0;
+  }
+
+  .panel {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .panel .subtitle {
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+
+  .detail-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .detail-main {
+    font-size: 21px;
+  }
+
+  .proposal-preview {
+    border-radius: 8px;
+  }
+
+  .proposal-preview-link {
+    margin-top: 12px;
+    width: calc(100vw - 104px);
+    max-width: calc(100vw - 104px);
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: white;
+    padding: 6px;
+    box-shadow: 0 8px 22px rgba(15,23,42,.10);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .proposal-preview-link::after {
+    left: 14px;
+    right: auto;
+    bottom: 14px;
+    font-size: 11px;
+  }
+
+  .proposal-preview-link .proposal-preview {
+    width: 720px;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .image-modal {
+    padding: 12px;
+  }
+
+  .image-modal img {
+    max-width: 96vw;
+    max-height: 82vh;
+    border-radius: 10px;
+  }
+
+  .image-modal-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+  <section class="visual">
+    <div class="intro">
+      <h1>Finance<br>Automation<br>Journey</h1>
+      <p>Select a finance floor to open the automation journey.</p>
+    </div>
+
+    <div class="main-steps" id="mainSteps">
+      <div class="main-step">
+        <span>1</span>
+        <div>
+          <strong>Pick a finance floor</strong>
+          <p>Start by choosing the finance subarea you want to explore.</p>
+        </div>
+      </div>
+      <div class="main-step">
+        <span>2</span>
+        <div>
+          <strong>Select a manual struggle</strong>
+          <p>Review the recurring pain points and choose the one to solve.</p>
+        </div>
+      </div>
+      <div class="main-step">
+        <span>3</span>
+        <div>
+          <strong>Read the automation journey</strong>
+          <p>See the opportunity, how it works, suggested tools and expected impact.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestion-card" id="suggestionCard">
+      <strong>Missing a manual struggle?</strong>
+      <p>Send me a suggestion and I will review it for the journey.</p>
+      <button class="suggestion-button" id="suggestionButton" type="button">
+        Send me a suggestion
+      </button>
+    </div>
+
+    <div class="floor-stack" id="floorStack"></div>
+  </section>
+
+  <aside class="panel hidden" id="panel">
+    <div class="kicker">Selected finance floor</div>
+    <h2 id="areaTitle"></h2>
+    <p class="subtitle" id="areaSubtitle"></p>
+
+    <section id="strugglesView">
+      <h3 class="section-title">Manual struggles</h3>
+      <div class="pain-list" id="painList"></div>
+    </section>
+
+    <section id="opportunityView" class="hidden">
+      <button class="back-button" id="backButton">
+        ← Back to manual struggles
+      </button>
+      <h3 class="section-title">Automation opportunity</h3>
+      <div class="detail-card" id="detailCard"></div>
+    </section>
+
+    <section id="outputDetailView" class="hidden">
+      <button class="back-button" id="outputBackButton">
+        ← Back to Manual executive reporting
+      </button>
+      <h3 class="section-title">Output detail</h3>
+      <div class="detail-card" id="outputDetailCard"></div>
+    </section>
+
+    <div class="panel-footer">
+      <div class="footer-note">
+        Finance Automation Journey: floor → manual struggle → technology/tools → automation opportunity → expected impact.
+      </div>
+
+      <button class="finance-base" id="homeButton" type="button">
+        Back to Finance Building
+      </button>
+    </div>
+  </aside>
+</main>
+
+<div class="image-modal hidden" id="imageModal" aria-hidden="true">
+  <button class="image-modal-close" id="imageModalClose" type="button" aria-label="Close image preview">×</button>
+  <img id="imageModalImg" src="" alt="">
+</div>
+
+<script>
+const areas = [
+  {
+    name: "CFO / Finance Leadership",
+    short: "CFO",
+    color: "#7A5734",
+    struggles: [
+      {
+        pain: "Limited team knowledge sharing",
+        manualDescription: [
+          "Finance teams often rely on knowledge held by a limited number of experienced employees. Processes, ERP functionality, department policies, control requirements and practical know-how are frequently transferred informally through ad hoc conversations, shadowing or repeated one-to-one explanations. As a result, knowledge is difficult to reuse, process understanding varies across the team and the organization becomes dependent on key individuals.",
+          "When experienced employees are absent, move roles or leave the organization, critical knowledge can be lost. This creates operational risk, slows down cross-training and makes it harder to standardize finance processes across teams. In addition, managers often lack structured visibility into whether employees have actually understood the shared knowledge or whether specific topics require additional reinforcement."
+        ],
+        technologyTools: [
+          "Knowledge-sharing sessions can be delivered and recorded using Microsoft Teams, Google Meet, Zoom or Cisco Webex. Recordings, transcripts, SOPs, templates and supporting documentation can be stored in SharePoint, OneDrive, Google Drive, Confluence or a Learning Management System.",
+          "For knowledge validation and progress tracking, the tool should be selected based on the level of automation required. If the organization needs structured learning paths, multiple assigned assessments and progress tracking by employee, tools such as Kahoot! 360, Moodle or other Learning Management Systems are a stronger fit.",
+          "If the requirement is limited to running individual quizzes after knowledge-sharing sessions, lighter tools such as Microsoft Forms, Google Forms, Quizizz, Mentimeter or Moodle Quiz can be used. In that case, results can be exported, consolidated in Excel or Google Sheets and then imported into Power BI or Tableau to monitor quiz scores, participation, pass/fail rates and knowledge gaps.",
+          "Workflow automation can be implemented using Microsoft Power Automate, Zapier or Make to send reminders, collect results and update tracking files. AI tools such as Microsoft Copilot, Google Gemini or Otter.ai can generate transcripts, summaries and reusable learning notes from recorded sessions."
+        ],
+        automationOpportunity: [
+          "Create an automated finance knowledge management and validation workflow using a flipped classroom format. Finance team members are organized into groups and each group prepares and explains its own area of knowledge to the rest of the department, covering topics such as policies, standard operating procedures, ERP modules, reporting processes, internal controls, month-end close activities and automation initiatives.",
+          "Each session is automatically recorded, transcribed, summarized and stored in a centralized finance knowledge repository together with presentation materials and supporting documentation. Materials are tagged by process, system, owner, role and review date, making them easier to search and reuse.",
+          "After each knowledge-sharing session, participants complete a short knowledge assessment using Kahoot! or an equivalent tool. Results are exported or automatically captured and consolidated into a dashboard showing participation, completion status, quiz scores, pass/fail rates, knowledge gaps and topics requiring reinforcement.",
+          "Managers can monitor repository coverage, critical process documentation, quiz results, materials pending review and knowledge gaps across finance areas. This helps identify which topics need additional training and which employees may require further support before being cross-trained or assigned to critical activities."
+        ],
+        expectedImpact: [
+          "Reduced dependency on key individuals, improved knowledge retention, stronger cross-training, better process consistency and improved business continuity during absences, turnover or organizational changes. Knowledge assessments and dashboards provide managers with clearer visibility into whether knowledge has actually been understood, not only shared."
+        ],
+        opportunity: "Automated finance knowledge management and validation workflow",
+        use_case: "Finance team members share their knowledge through a flipped classroom format, with sessions recorded, summarized, stored in a centralized repository and followed by short knowledge assessments.",
+        impact: "Reduced dependency on key individuals, improved knowledge retention, stronger cross-training and clearer visibility into knowledge gaps.",
+        proposalTasks: [
+          "Designed the finance knowledge-sharing framework.",
+          "Defined critical knowledge areas across finance policies, procedures, ERP modules, controls and operational processes.",
+          "Scheduled recurring flipped classroom knowledge-sharing sessions where finance team members explain their expertise to colleagues in groups.",
+          "Configured automatic recording, transcription and summarization of sessions.",
+          "Created a centralized finance knowledge repository.",
+          "Created standardized knowledge assessments using Kahoot! or equivalent tools.",
+          "Consolidated assessment results to monitor participation, scores, pass/fail rates and knowledge gaps.",
+          "Built dashboard views to monitor knowledge coverage, quiz results, overdue reviews and documentation gaps.",
+          "Documented governance rules for maintaining and updating knowledge materials."
+        ],
+        outputsExamples: [
+          "Finance knowledge and assessment dashboard"
+        ],
+        outputsPreview: "Finance knowledge assessment dashboard preview.png",
+        outputsPreviewAlt: "Finance onboarding knowledge assessment dashboard preview"
+      },
+      {
+        pain: "Poor and inconsistent finance onboarding",
+        manualDescription: [
+          "Finance onboarding is often inconsistent across roles, teams and locations. New joiners may receive different explanations depending on who trains them, when they join and how much documentation already exists. Key information about finance processes, how the ERP is used in daily activities, reporting cycles, controls, policies, approval workflows and stakeholder expectations is frequently shared through informal conversations, scattered files or repeated one-to-one explanations.",
+          "This makes the onboarding experience harder to scale and harder to measure. New employees may take longer to become productive, managers may not have clear visibility into onboarding progress and important finance knowledge can be missed during busy reporting periods, role changes or team transitions."
+        ],
+        technologyTools: [
+          "The onboarding program should reuse the same finance knowledge-sharing infrastructure. Onboarding sessions and role-specific explanations can be delivered and recorded using Microsoft Teams, Google Meet, Zoom or Cisco Webex. Recordings, transcripts, SOPs, templates, ERP how-to guides and supporting documentation can be stored in SharePoint, OneDrive, Google Drive, Confluence or a Learning Management System.",
+          "For onboarding validation and progress tracking, the tool should be selected based on the level of automation required. If the organization needs structured learning paths, assigned onboarding modules, multiple assessments and progress tracking by employee, tools such as Kahoot! 360, Moodle or other Learning Management Systems are a stronger fit.",
+          "If the requirement is limited to running individual quizzes after onboarding or knowledge-sharing sessions, lighter tools such as Microsoft Forms, Google Forms, Quizizz, Mentimeter or Moodle Quiz can be used. In that case, results can be exported, consolidated in Excel or Google Sheets and then imported into Power BI or Tableau to monitor onboarding completion, quiz scores, participation, pass/fail rates and knowledge gaps.",
+          "Workflow automation can be implemented using Microsoft Power Automate, Zapier or Make to send reminders, assign onboarding tasks, collect results and update tracking files. AI tools such as Microsoft Copilot, Google Gemini or Otter.ai can generate transcripts, summaries and reusable onboarding notes from recorded sessions."
+        ],
+        automationOpportunity: [
+          "Create a structured finance onboarding workflow with role-based onboarding paths for new joiners. Each path includes the activities, documents, ERP usage guidance, training materials, key contacts and process knowledge required for a specific finance role.",
+          "Complement this with a structured peer-to-peer (P2P) onboarding program connected to the finance knowledge-sharing workflow. During the first phase, each new joiner is paired with a Finance Lead or Senior team member who introduces the department structure, key stakeholders, governance, policies and ways of working. In the second phase, the employee is paired with a colleague performing the same role to receive hands-on training on daily operational activities and process-specific knowledge.",
+          "When a new employee joins the finance team, an onboarding workflow is triggered automatically. The new joiner receives a checklist of required actions, links to relevant documentation, ERP how-to guidance, training recordings and knowledge-sharing materials created through the Limited team knowledge sharing use case. Managers can monitor progress through a dashboard or tracker.",
+          "Throughout the onboarding journey, new employees complete the recorded learning path and pass the corresponding knowledge assessments before taking ownership of operational tasks. Results can be consolidated to identify areas where additional support is needed.",
+          "This creates a more consistent onboarding experience across finance roles and reduces dependency on informal explanations, individual availability or repeated manual follow-up."
+        ],
+        expectedImpact: [
+          "Faster ramp-up for new finance team members, clearer expectations, more consistent knowledge transfer and reduced onboarding dependency on individual managers or colleagues. A structured onboarding workflow also improves visibility for managers, reduces operational risk and helps new joiners become confident and productive sooner."
+        ],
+        opportunity: "Structured finance onboarding assistant",
+        use_case: "Create role-based onboarding paths for new finance team members, combining P2P support, ERP usage guidance, recorded learning materials, knowledge checks and progress tracking.",
+        impact: "Faster onboarding, clearer expectations for new joiners, better manager visibility and a more consistent ramp-up experience across finance roles.",
+        proposalTasks: [
+          "Mapped the key onboarding needs for each finance role.",
+          "Defined role-based onboarding paths covering processes, ERP usage, controls and reporting cycles.",
+          "Designed a two-phase P2P onboarding program pairing new joiners first with a Finance Lead or Senior team member and then with a colleague performing the same role.",
+          "Created a structured onboarding checklist for new finance team members.",
+          "Organized onboarding materials in a centralized finance repository.",
+          "Linked process guides, ERP how-to guidance, training recordings, templates and key contacts to each onboarding path.",
+          "Connected onboarding materials with the recorded learning path created through the Limited team knowledge sharing workflow.",
+          "Added short knowledge checks to validate understanding after key onboarding modules.",
+          "Configured reminders and progress tracking for new joiners and managers.",
+          "Built dashboard views to monitor onboarding completion, overdue tasks, assessment scores and knowledge gaps.",
+          "Documented governance rules for keeping onboarding materials updated."
+        ],
+        outputsExamples: [
+          "Structured finance onboarding workflow",
+          "Role-based onboarding checklist",
+          "Finance onboarding progress dashboard"
+        ],
+        outputsPreview: "Finance knowledge assessment dashboard preview.png",
+        outputsPreviewAlt: "Finance onboarding progress and knowledge assessment dashboard preview"
+      },
+      {
+        pain: "Unstructured task management",
+        manualDescription: [
+          "Finance teams often face ambiguity around who owns each activity, who should be consulted for specific topics and who has the authority to approve, validate or unblock a task. Responsibilities may be documented at a high level, but in daily execution many requests are handled through informal conversations, emails, chats or personal knowledge of who usually does this.",
+          "As a result, employees spend time identifying the right contact, clarifying responsibilities, chasing answers, checking task status and escalating issues manually. Work can be delayed, duplicated or left unresolved when several people are involved but no clear owner is accountable for the next step.",
+          "In addition, finance teams may continue performing recurring tasks that no longer add clear value, are duplicated elsewhere or exist only because they have always been done this way. Without a structured view of task purpose, owner, frequency and output, it is difficult to challenge whether certain activities are still necessary, should be simplified, reassigned, automated or eliminated entirely.",
+          "This creates hidden coordination effort and low-value manual work across the finance team, especially during month-end close, reporting deadlines, audits, reconciliations, approvals or urgent management requests. Managers may lack a clear view of who is handling what, where tasks are blocked, which topics require consultation, which activities create value and whether workload is distributed fairly across the team."
+        ],
+        technologyTools: [
+          "Several existing tools can support structured task ownership and responsibility management using RACI-style logic. In Microsoft 365 environments, Microsoft Planner, Microsoft Lists and SharePoint can be used to assign task owners, contributors, reviewers, due dates and status updates while keeping responsibilities visible to the team.",
+          "For more advanced task and workload management, tools such as Asana, monday.com, ClickUp and Smartsheet provide task boards, ownership fields, priorities, dependencies, recurring activities, workload views and dashboards. Airtable and Notion can also be used to build flexible responsibility matrices, combining task registers, owners, consultation points, documentation links and status tracking in one place.",
+          "For more formal workflow environments, Jira Service Management or ServiceNow can be used when tasks require request intake, assignment groups, approval paths, escalation rules and audit trails. These tools are especially useful when finance work must be routed across different teams or when stronger accountability and traceability are required."
+        ],
+        automationOpportunity: [
+          "Create a dedicated internal finance ownership and task coordination workflow based on RACI-style logic. Finance activities are structured by owner, finance area, role, status, priority, frequency, due date, consultation point and expected output, making responsibilities easier to understand and manage.",
+          "The workflow should clearly define who is responsible, accountable, consulted and informed for each recurring activity or operational request. This reduces ambiguity around who owns the next step, who needs to provide input and who should be kept updated.",
+          "In this project, the proposed solution has been developed as a dedicated Streamlit application focused on finance task ownership and RACI-style coordination. The prototype provides setup views to maintain finance areas, roles, ownership rules and activity timelines, together with dashboard views to monitor responsibilities, deadlines, status and workload distribution.",
+          "The application also includes change control mechanisms. Version control is used to track updates to the underlying model and application logic, while password protection limits who can access or modify the tool. This helps avoid uncontrolled changes and ensures that task ownership, responsibilities and process information are maintained in a governed way.",
+          "The workflow can also highlight activities with unclear ownership, overdue actions, repeated consultation needs or tasks that do not produce a clear output. This creates an opportunity to simplify, reassign, automate or remove low-value work."
+        ],
+        expectedImpact: [
+          "Clearer ownership of finance activities, reduced ambiguity around who should be consulted and better visibility over recurring tasks, deadlines and responsibilities.",
+          "The solution helps reduce time spent chasing updates, clarifying roles, duplicating work or maintaining tasks that no longer add value. Managers gain a more structured view of workload, blocked activities, overdue tasks and areas where responsibilities need to be adjusted.",
+          "Overall, the team can operate with better coordination, stronger accountability and improved control over finance execution."
+        ],
+        opportunity: "Finance task ownership and RACI coordination workflow",
+        use_case: "Centralise finance activities with RACI ownership, due dates, priority, status tracking, consultation points, expected outputs and controlled edit governance.",
+        impact: "Clearer accountability, fewer lost requests, less low-value work and better visibility of team workload.",
+        proposalTasks: [
+          "Designed the finance task ownership and RACI coordination framework.",
+          "Defined the key finance areas, roles and recurring activities to be included in the model.",
+          "Structured each activity by responsible, accountable, consulted and informed roles.",
+          "Added task attributes such as status, priority, frequency, due date, consultation point and expected output.",
+          "Built a Streamlit prototype to manage finance ownership and recurring activity timing.",
+          "Created setup views to maintain finance areas, roles, ownership rules and timeline information.",
+          "Built dashboard views to monitor RACI ownership, activity status, deadlines and workload distribution.",
+          "Added change log functionality to track saved updates.",
+          "Added password protection to control who can modify the setup and ownership model.",
+          "Prepared the application structure for public deployment while keeping sensitive credentials outside the published code."
+        ],
+        outputsExamples: [
+          "Finance RACI matrix",
+          "Task ownership dashboard",
+          "Timeline of recurring finance activities",
+          "Open and overdue task tracker",
+          "View of responsible, accountable, consulted and informed roles by activity",
+          "Workload view by finance role or area",
+          "Change log for saved updates",
+          "Password-protected setup and edit controls",
+          {
+            label: "Open Finance RACI & Timeline app",
+            href: "https://finance-raci-timeline.streamlit.app/"
+          }
+        ]
+      },
+      {
+        pain: "No clear delivery calendar",
+        manualDescription: [
+          "Finance teams often manage deadlines through a mix of personal calendars, email reminders, spreadsheets, recurring meetings and informal follow-ups. Month-end close tasks, reporting packs, tax filings, forecast cycles, audit requests, board materials and business deliverables may each have their own timing, owner and dependency, but the full delivery calendar is not always visible in one place.",
+          "As a result, teams can struggle to understand what is due next, which activities depend on other teams, who owns each deadline and where bottlenecks may appear. Some deadlines are well known by experienced employees, but less visible to new joiners, managers or cross-functional stakeholders.",
+          "This creates planning risk during peak finance periods. Work may be started too late, dependencies may be discovered only when the deadline is close and managers may need to chase updates manually to understand whether the team is on track. Without a shared calendar, it is also harder to balance workload, anticipate conflicts and coordinate handoffs between finance subareas."
+        ],
+        technologyTools: [
+          "Existing calendar and work management tools can support a shared finance delivery calendar. Microsoft Outlook Calendar, Microsoft Teams, Microsoft Planner, Microsoft Lists and SharePoint can be used in Microsoft 365 environments to maintain recurring deadlines, owners, due dates, reminders and status updates.",
+          "For more structured project and task planning, tools such as Asana, monday.com, ClickUp, Smartsheet, Wrike, Airtable and Notion can be used to create recurring finance calendars, dependency views, workload views, timeline boards and dashboard summaries.",
+          "For formal workflow and deadline governance, Jira Service Management or ServiceNow can be used when finance deliverables require request intake, assignment groups, approval steps, escalation rules, SLAs and audit trails. Power BI or Tableau can be connected to the underlying task data to monitor deadlines, overdue items and workload by finance area."
+        ],
+        automationOpportunity: [
+          "Create an integrated finance delivery calendar that consolidates recurring deadlines, process milestones and key deliverables across finance areas. The calendar should cover month-end close activities, reporting submissions, forecast cycles, tax filings, audit requests, board packs, management reporting and other recurring business deadlines.",
+          "Each calendar item should include the owner, accountable role, consulted stakeholders, due date, start date, status, priority, dependency, expected output and recurrence pattern. This creates a single view of what needs to be delivered, who owns it and what must happen before it can be completed.",
+          "In this project, the proposed solution has been developed through the same Streamlit application used for finance ownership and RACI-style coordination. The prototype combines ownership information with activity timing, allowing the team to view recurring finance activities by month, role, area and status.",
+          "Change control is supported through version control, a change log and password-protected setup screens, helping ensure that calendar updates are governed and not changed informally by anyone.",
+          "In a second phase, the workflow could be enhanced with automated reminders, overdue flags, dependency tracking and escalation points for critical deadlines.",
+          "Managers can use the calendar to anticipate peak workload, identify upcoming deadlines, monitor blocked activities and coordinate handoffs between finance subareas before deadlines become urgent."
+        ],
+        expectedImpact: [
+          "Improved planning, fewer deadline surprises and stronger coordination across finance subareas.",
+          "The solution gives managers and team members a clearer view of upcoming deliverables, owners, dependencies and overdue actions. This reduces manual chasing, improves workload planning and helps the team prepare earlier for month-end close, audits, reporting cycles and other critical deadlines.",
+          "A shared delivery calendar also improves business continuity because timing knowledge is no longer held only by experienced individuals or scattered across personal calendars and spreadsheets."
+        ],
+        opportunity: "Integrated finance delivery calendar",
+        use_case: "Build a shared calendar for close activities, reporting deadlines, tax filings, forecasts, audits, board packs and key business deliverables.",
+        impact: "Improved planning, fewer deadline surprises and stronger coordination across finance subareas.",
+        proposalTasks: [
+          "Mapped recurring finance deliverables across close, reporting, tax, audit, forecasting and management reporting cycles.",
+          "Defined owners, accountable roles, consulted stakeholders and informed audiences for each delivery item.",
+          "Structured each activity with start date, due date, status, priority, recurrence and expected output.",
+          "Linked delivery calendar items to the finance RACI ownership model.",
+          "Built timeline views to monitor activities by month, finance area, role and status.",
+          "Added setup views to maintain recurring activity timing and ownership rules.",
+          "Added change log functionality to track saved calendar updates.",
+          "Added password protection to control who can modify delivery timing and ownership information.",
+          "Prepared dashboard views to identify overdue activities, upcoming deadlines, workload peaks and blocked deliverables.",
+          "Documented governance rules for maintaining the finance delivery calendar."
+        ],
+        outputsExamples: [
+          "Integrated finance delivery calendar",
+          "Monthly finance activity timeline",
+          "Upcoming deadline tracker",
+          "Overdue activity view",
+          "Delivery ownership matrix",
+          "Workload view by finance area or role",
+          "Change log for calendar updates",
+          "Password-protected calendar setup controls",
+          {
+            label: "Open Finance RACI & Timeline app",
+            href: "https://finance-raci-timeline.streamlit.app/"
+          }
+        ]
+      },
+      {
+        pain: "Missing finance policies and procedures",
+        opportunity: "Controlled finance policy and procedure library",
+        use_case: "Document policies, procedures, approval rules, templates and control requirements in a governed repository with owners, review dates and version history.",
+        impact: "Stronger controls, easier audit preparation and more consistent execution of finance processes."
+      },
+      {
+        pain: "Limited real-time financial visibility",
+        opportunity: "Executive finance cockpit",
+        use_case: "Automated CFO dashboard combining cash, revenue, costs, working capital and forecast indicators.",
+        impact: "Faster decision-making and fewer ad hoc reporting requests."
+      },
+      {
+        pain: "Too many ad hoc requests",
+        opportunity: "Self-service finance analytics",
+        use_case: "Create standard dashboards and guided analysis views for recurring business questions.",
+        impact: "Reduced dependency on manual finance support."
+      },
+      {
+        pain: "Limited visibility into finance team wellbeing",
+        manualDescription: [
+          "Finance leaders often lack structured, recurring visibility into how their teams are feeling across workload, collaboration, management support and overall wellbeing. Without this visibility, managers may rely too heavily on assumptions or occasional check-ins, making it harder to identify early signs of burnout, disengagement or workload imbalance before they become turnover, missed targets or reduced productivity."
+        ],
+        technologyTools: [
+          "There are leading, widely used employee experience and employee listening platforms in the market, including Culture Amp, Qualtrics EmployeeXM, Workday Peakon Employee Voice, Microsoft Viva Glint, Lattice, 15Five, Leapsome and Workleap Officevibe. However, a finance team can start with a simpler and more flexible solution using tools that may already be available internally.",
+          "This challenge can be addressed with lightweight survey and dashboard tools such as Google Forms, Microsoft Forms, Typeform or SurveyMonkey for data collection; Google Sheets, Excel, SharePoint or OneDrive for data storage; and Tableau, Power BI, Looker Studio or Qlik Sense for visualization."
+        ],
+        automationOpportunity: [
+          "Create an automated quarterly wellbeing feedback loop. Team members complete a short recurring survey, and responses are automatically collected, structured and visualized in a dashboard by quarter, year, finance subarea, location and wellbeing category.",
+          "This allows managers to move from informal impressions to structured visibility, helping them identify trends before burnout, disengagement, workload imbalance or collaboration issues become more serious."
+        ],
+        expectedImpact: [
+          "Improved visibility into team wellbeing, earlier detection of people-related risks, better leadership decisions and more consistent follow-up actions. Over time, this can support stronger collaboration, higher retention, better workload balance and a more resilient finance function."
+        ],
+        opportunity: "Automated quarterly wellbeing feedback loop",
+        use_case: "Team members complete a short recurring survey, and responses are automatically collected, structured and visualized in a dashboard by quarter, year, finance subarea, location and wellbeing category.",
+        impact: "Improved visibility into team wellbeing, earlier detection of people-related risks, better leadership decisions and more consistent follow-up actions.",
+        proposalTasks: [
+          "Created the quarterly wellbeing survey in Google Forms.",
+          "Downloaded the Google Sheets response dataset as an Excel file to use as the Tableau input file.",
+          "Built the Tableau workbook with score by question, trend, location map and finance subarea heatmap.",
+          "Prepared the dashboard preview for leadership review.",
+          "Documented the refresh steps to update the dashboard each quarter."
+        ],
+        proposalResources: [
+          {
+            label: "Finance team wellbeing form",
+            href: "Finance team wellbeing form.pdf"
+          },
+          {
+            label: "Finance team wellbeing dashboard",
+            href: "Finance team wellbeing dashboard preview.png"
+          }
+        ],
+        proposalPreview: "Finance team wellbeing dashboard preview.png"
+      }
+    ]
+  },
+  {
+    name: "Accounting",
+    short: "Accounting",
+    color: "#1F4E79",
+    struggles: [
+      {
+        pain: "Manual journal entries",
+        opportunity: "Automated journal posting",
+        use_case: "Recurring journals and rule-based journal templates generated from source transactions.",
+        impact: "Fewer errors and faster month-end close."
+      },
+      {
+        pain: "Manual exchange rate upload",
+        opportunity: "Automated exchange rate integration and validation",
+        use_case: "Connect approved FX rate sources to the ERP, schedule automatic rate uploads, validate missing or unusual rates and keep an audit trail of changes.",
+        impact: "Lower risk of FX errors, faster period-end processing and stronger control over currency revaluation."
+      },
+      {
+        pain: "Reconciliation bottlenecks",
+        opportunity: "Automated account reconciliation",
+        use_case: "Match ledger balances with subledgers, bank data and supporting schedules.",
+        impact: "Less close pressure and improved accuracy."
+      },
+      {
+        pain: "Missing accounting evidence",
+        opportunity: "Evidence completeness checks",
+        use_case: "Flag journal entries or balances without required documents or explanations.",
+        impact: "Better audit trail and fewer audit queries."
+      },
+      {
+        pain: "Close calendar pressure",
+        opportunity: "Close management workflow",
+        use_case: "Track close tasks, owners, deadlines and dependencies in one workflow.",
+        impact: "More predictable month-end close."
+      }
+    ]
+  },
+  {
+    name: "FP&A",
+    short: "FP&A",
+    color: "#5E3C99",
+    struggles: [
+      {
+        pain: "Manual executive reporting",
+        manualDescription: [
+          "Executive reporting is often prepared manually by combining information from ERP exports, financial statements, Excel models, planning files, dashboards, management accounts and ad hoc analysis. Finance teams may spend significant time collecting data, reconciling figures, updating templates, refreshing charts and preparing commentary for CFO updates, management reports, board packs or investor materials.",
+          "Although the reporting process is recurring, it often depends on manual spreadsheet work, individual knowledge of how the pack is built and repeated copy-paste between files. When source data changes, finance teams may need to update several outputs separately, increasing the risk of version issues, formula errors, inconsistent numbers or misaligned narratives.",
+          "As a result, executive reporting can become time-consuming, difficult to scale and hard to control. FP&A teams spend too much time producing reporting materials and not enough time interpreting performance, explaining business drivers and supporting decisions."
+        ],
+        technologyTools: [
+          "Several FP&A, planning and reporting platforms can support more structured executive reporting. Pigment and Abacum are strong options for modern finance teams that want connected planning, reporting workflows, collaboration and scenario analysis. Workday Adaptive Planning is also a solid option for medium and large companies with recurring planning, forecasting and reporting processes.",
+          "Other relevant tools include Anaplan, Planful, Board and Vena. Anaplan is powerful for complex enterprise planning models, Planful is well suited for traditional FP&A, budgeting, forecasting and reporting, Board combines planning, analytics and reporting, and Vena is useful for teams that want to stay close to Excel while adding workflow, control and consolidation.",
+          "These platforms can be complemented with Excel, Google Sheets, Power BI, Tableau or Looker Studio for modelling, dashboards and visualization. AI assistants such as ChatGPT, Microsoft Copilot, Gemini or Claude can support variance explanations, financial commentary, executive summaries and reporting narratives."
+        ],
+        automationOpportunity: [
+          "Create a reusable executive reporting workflow that converts controlled financial data into multiple reporting assets. Instead of preparing each report manually in separate spreadsheets, slides or dashboards, the process can be structured around reusable data models, reporting templates, dashboards and AI-assisted commentary.",
+          "The workflow should connect source financial data with recurring executive outputs such as financial models, dashboards, board packs, variance analysis, financial commentary and downloadable files. Each output can be linked to the same underlying data, improving consistency, traceability and reuse across reporting cycles.",
+          "This approach allows FP&A teams to move from manual report production to a controlled reporting journey where data, models, visuals and narratives are progressively reused and refined."
+        ],
+        expectedImpact: [
+          "Shorter reporting preparation cycles, fewer manual updates and stronger consistency across executive outputs. Finance teams can reduce time spent collecting data, reconciling files, checking formulas and rebuilding recurring materials.",
+          "The solution also improves traceability from source data to final reporting outputs, reducing the risk of inconsistent figures, version issues and unsupported commentary.",
+          "Over time, FP&A teams can spend more time analyzing performance, explaining business drivers and supporting decision-making, rather than manually producing reporting packs."
+        ],
+        opportunity: "Reusable executive reporting workflow",
+        use_case: "Convert controlled financial data into several executive reporting assets, including financial models, dashboards, board packs, variance analysis, AI commentary and downloadable files.",
+        impact: "Shorter reporting cycles, stronger consistency and more time for analysis instead of manual report production.",
+        proposalTasks: [
+          "Defined the executive reporting workflow and main reporting outputs.",
+          "Identified the recurring data inputs used for CFO updates, management reports and board packs.",
+          "Structured the reporting journey into separate output pages.",
+          "Created a first financial model example based on the Create Repsol financial model workstream.",
+          "Defined how controlled financial data can be reused across models, dashboards, packs and commentary.",
+          "Proposed dashboard, variance analysis and AI commentary outputs as next reporting layers.",
+          "Prepared the structure for adding downloadable Excel, PDF and presentation files."
+        ],
+        outputsExamples: [
+          {
+            label: "Financial Model: 3-Statements Model",
+            anchor: "executive-reporting-financial-model",
+            description: "Finance teams often have a P&L and balance sheet, but no reliable cash flow statement because the ERP-generated cash flow was incomplete, inaccurate or simply did not exist. AI can help build a faster, auditable 3-statements model instead of spending hours reconstructing it manually."
+          },
+          {
+            label: "Executive Dashboard",
+            locked: true,
+            description: "Recurring KPI views for revenue, margin, costs, cash flow, working capital, leverage, forecast performance and key movements."
+          },
+          {
+            label: "Board / Management Pack",
+            locked: true,
+            description: "Structured reporting materials for CFO, executive committee or board-level review."
+          },
+          {
+            label: "Variance Analysis",
+            locked: true,
+            description: "Automated analysis of actuals vs budget, forecast, prior year or previous period."
+          },
+          {
+            label: "AI Financial Commentary",
+            locked: true,
+            description: "Draft executive narratives explaining key drivers, risks, opportunities and financial movements."
+          },
+          {
+            label: "Downloadable Files",
+            locked: true,
+            description: "Excel models, PDF reports, PowerPoint packs, dashboard previews and supporting files."
+          }
+        ],
+        outputsTitle: "Outputs / examples",
+        outputPages: [
+          {
+            id: "executive-reporting-financial-model",
+            title: "Financial Model",
+            paragraphs: [
+              "<strong>Case 1 - Inditex: iterative and unstructured prompting.</strong><br>The exercise started with a simple request to obtain a P&L and balance sheet for an IBEX 35 company and then evolved into a structured Excel workbook through many separate prompts, corrections and validation steps.",
+              "In the ChatGPT workflow, the model executed and learned progressively. It first produced the P&L and balance sheet, then converted the output into Excel, added the equity breakdown, separated retained earnings from profit for the year, translated the workbook into English and improved the format. The workstream then expanded into direct and indirect cash flow statements calculated with formulas. Through several corrections, ChatGPT adjusted the operating cash flow presentation, removed or reduced opaque balancing logic, improved readability and rebuilt the cash flow structure so ending cash reconciled to the balance sheet.",
+              "The ChatGPT process required 23 prompts to reach the final valid workbook. It produced cash flow figures that were closer to Inditex's published numbers, apparently because they were better anchored to the official annual accounts or to a source reproducing them, but the Excel presentation was less polished and required more iteration.",
+              "In the Claude workflow, the comparable Inditex exercise required only 8 prompts and produced a stronger Excel presentation, with a more polished and readable workbook layout. The original Claude workbook tied mathematically but relied on a large opaque reconciling line of -3,543m for items that were not properly modelled, such as real capex and IFRS 16 lease payments. After the assumptions were challenged, the revised Claude workbook reduced that residual to approximately -52m by documenting a capex and lease-payment estimation method.",
+              "There is also an important nuance: the first cash flow request explicitly asked for a calculated cash flow, not one taken from the internet. The source-access problem became relevant later, when the model was asked to compare against Inditex's published cash flow and Claude could not access the annual accounts PDF because of robots.txt restrictions. A practical limitation also appeared because Claude credits ran out around the fifth prompt, interrupting the process before the full iteration cycle could continue.",
+              "<strong>Case 2 - Repsol: structured prompt and controlled comparison.</strong><br>For Repsol, both ChatGPT and Claude received the same detailed prompt upfront: \"I am going to provide Repsol's financial statements in English as a PDF. I want you to take the P&L and balance sheet and format them in Excel, expressed in EUR thousands with no decimals. Create one tab for the P&L and one tab for the balance sheet. From there, add two additional tabs to the Excel workbook: in one tab, calculate the direct cash flow statement using formulas, and in the other, calculate the indirect cash flow statement using formulas, without looking at or using the cash flow statement published by Repsol in the PDF I am providing. Use EUR thousands with no decimals as the format. Make sure all text is clearly visible and readable in Excel. Provide the workbook in English. Break down equity into its different components, with retained earnings separated from net income. The indirect cash flow should start from net income. Calculate it as if you were a senior FP&A professional with strong technical financial and accounting knowledge, meaning do not invent figures and do not create manual adjustments to force the figures to balance when they do not reconcile. Be rigorous and technical. Do not use the cash flow statement published by Repsol.\"",
+              "Even with a detailed prompt, ChatGPT did not reach the same Excel formatting and presentation quality as Claude, whose workbook style was more polished, readable and closer to a senior FP&A deliverable.",
+              "The Repsol comparison was more technical and more balanced. Against Repsol's published cash flow, ChatGPT was closer on the aggregate absolute error across the three main subtotals CFO, CFI and CFF. However, Claude tied exactly to the net change in cash, while ChatGPT was only slightly off. The important nuance is that Claude's perfect cash tie-out came from compensations between sections, not necessarily from better classification of each cash flow line.",
+              "Claude initially won on tie-out because it classified more balance sheet and equity movements into operating, investing or financing activities, including items that may include non-cash effects, FX, scope changes, reclassifications or other movements. ChatGPT instead left an explicit control line for what could not be supported without using the published cash flow statement. This was not an error to hide, but a transparency mechanism: unsupported differences were shown rather than forced into operating, investing or financing lines.",
+              "After being challenged, Claude adopted the same discipline: it rebuilt operating and investing cash flows using gross note-level detail, including capex and disposals from fixed asset notes, net investments, provisions and deferred tax information. It then placed the remaining unsupported amount in one explicit formula-driven line called UNRECONCILED / NON-CASH AND OTHER UNALLOCATED ITEMS, instead of distributing it manually across the statement.",
+              "This is what made the Repsol case valuable: it exposed the bias created by a model that forces the tie-out. Closing the cash movement to zero can feel like the work is finished, while leaving an explicit line saying this cannot be fully supported can feel incomplete. In technical FP&A work, however, the explicit unresolved line may be the more honest answer when the available data is not enough to justify the full movement.",
+              "The Repsol lesson was especially powerful: ChatGPT was closer to Repsol's published CFO, CFI and CFF subtotals, which makes it the closer result if the published cash flow statement is used as the benchmark. Claude's larger unreconciled line was more conservative and made the limitations more visible, but it also meant Claude was further away from the company's published cash flow classification. The senior FP&A takeaway is that tying out is not the same as being right, and not tying out can sometimes be an honest signal that the available data is not sufficient to fully explain the movement without unsupported assumptions.",
+              "<strong>Case 3 - Banco Santander: financial-sector complexity.</strong><br>The Santander exercise used the same structured prompt shown below in the Structured prompt section.",
+              "This case was materially harder because Santander operates in the financial sector. Unlike Inditex and Repsol, which are industrial companies, Santander's balance sheet is closely linked to the core economics of the business. Loans, deposits, trading assets, derivatives, fair value movements, FX translation, wholesale funding, held-for-sale balances and even cash and cash equivalents themselves affect the cash flow presentation differently in a financial institution, but cannot be fully classified from the P&L and balance sheet alone.",
+              "ChatGPT produced a transparent two-statement cash bridge that tied ending cash to the balance sheet and isolated the unreconciled balance, but it did not replicate Santander's published CFO, CFI and CFF structure. Claude came closer structurally because it attempted to classify operating, investing and financing cash flows, although it still differed materially from Santander's published figures.",
+              "From an Excel presentation perspective, ChatGPT was also not at Claude's level of formatting and style, even with a fairly complete prompt.",
+              "The lesson is that financial-sector cash flow automation requires sector-specific rules and stronger benchmarking. For financial institutions, a model can tie mathematically while still being far from the company's official cash flow logic. The senior FP&A takeaway is that structured prompts help, but industry expertise, source control and explicit residual bridges are still essential.",
+              "Overall, these three cases show why manual executive reporting benefits from structured prompts, source control, explicit assumptions, reconciliation checks and senior review. AI can perform serious technical FP&A work, but financial outputs still need traceability, challenge and governance before they are used for decision-making."
+            ],
+            downloads: [
+              {
+                label: "Inditex FS2025 - ChatGPT",
+                href: "Inditex_FS2025_ChatGPT.xlsx"
+              },
+              {
+                label: "Inditex FS2025 - Claude Original",
+                href: "Inditex_FS2025_Claude_Original.xlsx"
+              },
+              {
+                label: "Inditex FS2025 - Claude Challenged",
+                href: "Inditex_FS2025_Claude_Challenged.xlsx"
+              },
+              {
+                label: "Repsol FS2025 - ChatGPT",
+                href: "Repsol_FS2025_ChatGPT.xlsx"
+              },
+              {
+                label: "Repsol FS2025 - Claude Original",
+                href: "Repsol_FS2025_Claude_Original.xlsx"
+              },
+              {
+                label: "Repsol FS2025 - Claude Challenged",
+                href: "Repsol_FS2025_Claude_Challenged.xlsx"
+              },
+              {
+                label: "Banco Santander FS2025 - ChatGPT",
+                href: "BancoSantander_FS2025_ChatGPT.xlsx"
+              },
+              {
+                label: "Banco Santander FS2025 - Claude",
+                href: "BancoSantander_FS2025_Claude.xlsx"
+              }
+            ],
+            prompt: "Use the financial statements PDF in the language provided, extract the P&L and balance sheet into Excel, and use the same language in which the provided P&L and balance sheet are expressed. Express figures in EUR thousands with no decimals and thousands separators, create separate P&L and balance sheet tabs, add direct and indirect cash flow tabs calculated with formulas, avoid using the published company cash flow statement, keep all text readable, show equity in detail, separate retained earnings from net income, start the indirect cash flow from net income, and behave like a senior FP&A professional without inventing figures or forcing manual adjustments.<br><br>Use a polished senior FP&A workbook format: merged title and subtitle rows, readable Arial font, wide columns, wrapped methodology notes, frozen panes, clear section headers, bold subtotal rows, light blue section fills, light grey subtotal fills, red-highlighted unreconciled/control lines, source/note columns, formula-driven calculations and final reconciliation checks. All financial figures should use thousands separators and no decimals.<br><br>In both the direct and indirect cash flow tabs, include the unreconciled balance as a line within the cash-flow bridge, not outside it. The unreconciled balance must be part of total cash movement and therefore part of the ending cash balance calculation. Ending cash balance must equal opening cash balance plus total cash movement, including the unreconciled balance, and must reconcile to the cash balance reported on the balance sheet in both the direct and indirect cash flow tabs.<br><br>Clearly explain why the unreconciled balance is not further reconciled: with only the P&L and balance sheet, there may not be enough disclosed information to separate FX effects, non-cash movements, reclassifications, perimeter/M&A effects, held-for-sale balances, classification differences or note-level cash movements without using the published cash flow statement or making unsupported assumptions. Do not invent figures, do not force manual allocations, and do not hide the residual. The workbook should be easy to read, audit and challenge."
+          },
+          {
+            id: "executive-reporting-dashboard",
+            title: "Executive Dashboard",
+            paragraphs: [
+              "This output would translate the structured financial model into recurring executive KPI views. The dashboard can focus on revenue, margin, costs, cash flow, working capital, leverage, forecast performance and key movements.",
+              "The objective is to give management a visual view of performance without rebuilding charts manually for each reporting cycle."
+            ]
+          },
+          {
+            id: "executive-reporting-pack",
+            title: "Board / Management Pack",
+            paragraphs: [
+              "This output would convert the controlled financial data into a structured board or management reporting pack. It can include financial highlights, key movements, risks, opportunities and supporting charts.",
+              "The goal is to reduce manual slide preparation and make the pack consistent with the underlying model and dashboard."
+            ]
+          },
+          {
+            id: "executive-reporting-variance",
+            title: "Variance Analysis",
+            paragraphs: [
+              "This output would compare actuals against budget, forecast, prior year or previous period. It can identify material movements and organize them by business driver, account, entity, product, region or cost category.",
+              "The purpose is to move from manual variance investigation to a more repeatable analysis layer."
+            ]
+          },
+          {
+            id: "executive-reporting-commentary",
+            title: "AI Financial Commentary",
+            paragraphs: [
+              "This output would use AI assistance to draft executive commentary from the financial model, dashboard and variance analysis. The commentary can explain key drivers, risks, opportunities and financial movements.",
+              "Finance still reviews and validates the final narrative, but the first draft becomes faster and more consistent."
+            ]
+          },
+          {
+            id: "executive-reporting-files",
+            title: "Downloadable Files",
+            paragraphs: [
+              "This output would group the reusable reporting files generated through the journey, such as Excel models, PDF reports, PowerPoint packs, dashboard previews and supporting files.",
+              "The goal is to make final reporting outputs easy to access, reuse and distribute from one place."
+            ]
+          }
+        ]
+      },
+      {
+        pain: "Manual budget preparation",
+        opportunity: "Automated budget preparation workflow",
+        use_case: "Coordinate budget inputs, templates, assumptions, approvals and consolidation in a controlled workflow connected to finance and operational data.",
+        impact: "Shorter budget cycles, fewer version issues and more reliable budget submissions."
+      },
+      {
+        pain: "Manual forecasting",
+        opportunity: "Driver-based forecast automation",
+        use_case: "Refresh forecasts using actuals, business drivers, run-rate logic and scenario assumptions instead of rebuilding forecast files manually.",
+        impact: "Faster forecast updates, better scenario planning and more time for analysis instead of file preparation."
+      },
+      {
+        pain: "Version control issues",
+        opportunity: "Single source of planning truth",
+        use_case: "Lock versions, track assumptions and store forecast iterations centrally.",
+        impact: "Higher confidence in budget and forecast outputs."
+      },
+      {
+        pain: "Delayed variance analysis",
+        opportunity: "Automated variance commentary",
+        use_case: "Detect key budget vs actual movements and draft explanations.",
+        impact: "Faster insight generation."
+      },
+      {
+        pain: "Weak scenario analysis",
+        opportunity: "Scenario simulation dashboard",
+        use_case: "Compare base, upside and downside cases with automated sensitivity outputs.",
+        impact: "Improved strategic planning."
+      }
+    ]
+  },
+  {
+    name: "Treasury",
+    short: "Treasury",
+    color: "#006D6F",
+    struggles: [
+      {
+        pain: "Manual bank balance and transaction updates",
+        opportunity: "Automated bank feed integration",
+        use_case: "Connect bank accounts to refresh balances and bank transactions automatically by entity, currency and account.",
+        impact: "Daily cash visibility with less manual effort and fewer update errors."
+      },
+      {
+        pain: "Poor real-time cash visibility",
+        opportunity: "Cash visibility dashboard",
+        use_case: "Show opening cash, inflows, outflows, closing cash and restricted cash by entity, bank and currency.",
+        impact: "Faster treasury decisions and earlier visibility of liquidity pressure."
+      },
+      {
+        pain: "Manual cash flow forecasting",
+        opportunity: "90-day cash flow forecast automation",
+        use_case: "Forecast cash using AP, AR, payroll, tax and recurring payments.",
+        impact: "Less spreadsheet dependency and better short-term planning."
+      },
+      {
+        pain: "Manual organisation of supplier invoices for payment",
+        opportunity: "Payment proposal preparation workflow",
+        use_case: "Group supplier invoices by due date, priority, entity, currency, bank account and payment run so treasury can prepare payment proposals in a controlled queue.",
+        impact: "More reliable payment preparation, fewer missed due dates and better prioritisation of supplier payments."
+      },
+      {
+        pain: "One-by-one supplier payments in online banking",
+        opportunity: "Bulk payment file generation",
+        use_case: "Generate approved payment files from ERP or payment proposal data and upload them to online banking or a payment platform.",
+        impact: "Less manual bank entry, fewer payment errors and faster payment execution."
+      },
+      {
+        pain: "Duplicate payment risk",
+        opportunity: "Duplicate payment prevention controls",
+        use_case: "Check supplier, bank account, invoice number, amount, due date and payment references before payment release.",
+        impact: "Lower duplicate payment risk and stronger payment controls."
+      },
+      {
+        pain: "Manual bank accounting",
+        opportunity: "Automated bank posting rules",
+        use_case: "Use bank transaction rules to propose accounting entries for fees, transfers, receipts, payments and recurring bank movements.",
+        impact: "Faster bank accounting and fewer manual posting errors."
+      },
+      {
+        pain: "No bank reconciliation process",
+        opportunity: "Automated bank reconciliation",
+        use_case: "Match bank transactions against ledger entries, payment files and receipts, then route unmatched items for review.",
+        impact: "More reliable cash records and faster month-end bank close."
+      },
+      {
+        pain: "Lack of payment approval workflow",
+        opportunity: "Controlled payment approval workflow",
+        use_case: "Route payment proposals through approval levels based on amount, entity, supplier risk and bank account before release.",
+        impact: "Stronger payment governance and clearer evidence of approvals."
+      },
+      {
+        pain: "Unreliable supplier master data for payments",
+        opportunity: "Supplier payment master data controls",
+        use_case: "Validate supplier bank details, ownership, tax identifiers and change approvals before payments are processed.",
+        impact: "Reduced fraud risk and fewer failed or misdirected payments."
+      }
+    ]
+  },
+  {
+    name: "Accounts Payable",
+    short: "AP",
+    color: "#4B6F2A",
+    struggles: [
+      {
+        pain: "Manual supplier invoice reception",
+        opportunity: "Centralised supplier invoice intake",
+        use_case: "Capture supplier invoices from email, portals and shared folders into one controlled intake queue with supplier, entity and received-date tracking.",
+        impact: "Fewer lost invoices, better intake control and faster visibility of invoices entering AP."
+      },
+      {
+        pain: "Manual organisation of supplier invoices",
+        opportunity: "Supplier invoice classification and routing",
+        use_case: "Classify invoices by supplier, entity, due date, PO status, approval owner and payment priority before processing.",
+        impact: "Clearer AP workload, fewer processing delays and better prioritisation of urgent invoices."
+      },
+      {
+        pain: "Manual supplier invoice posting",
+        opportunity: "Automated supplier invoice posting",
+        use_case: "Create draft accounting entries from invoice data, supplier master data, tax rules, cost centres and coding rules before AP review.",
+        impact: "Less manual posting effort, fewer coding errors and faster invoice processing."
+      },
+      {
+        pain: "Lack of approval workflow and visibility",
+        opportunity: "Invoice approval workflow with status tracking",
+        use_case: "Route invoices to the right approvers, show approval status, send reminders and escalate overdue approvals.",
+        impact: "Less manual chasing, clearer ownership and faster approval cycles."
+      },
+      {
+        pain: "Missing POs or manual PO matching",
+        opportunity: "Automated PO and invoice matching",
+        use_case: "Identify invoices without purchase orders and automatically compare PO invoices against orders, receipts, quantities, prices and tolerances.",
+        impact: "Faster exception handling, fewer blocked invoices and stronger purchasing control."
+      },
+      {
+        pain: "Too many invoice variables extracted manually",
+        opportunity: "Invoice OCR and data extraction",
+        use_case: "Extract supplier, invoice number, date, amount, currency, VAT, payment terms, PO number, bank details and line-level data automatically.",
+        impact: "Less manual data entry, fewer typing errors and more complete invoice records."
+      },
+      {
+        pain: "Lack of supplier invoice status visibility",
+        opportunity: "Supplier invoice status dashboard",
+        use_case: "Track invoice status from received to extracted, posted, pending approval, approved, blocked, ready for payment and paid.",
+        impact: "Fewer status queries, better AP control and improved communication with stakeholders."
+      },
+      {
+        pain: "Duplicate supplier invoices",
+        opportunity: "Duplicate supplier invoice detection",
+        use_case: "Detect repeated supplier, invoice number, amount, date, PO reference or similar document patterns before posting or payment.",
+        impact: "Reduced duplicate invoice and duplicate payment risk."
+      },
+      {
+        pain: "Manual accrual calculation",
+        opportunity: "Automated AP accruals",
+        use_case: "Estimate accruals from received goods, open POs and unprocessed invoices.",
+        impact: "More accurate month-end results."
+      }
+    ]
+  },
+  {
+    name: "Accounts Receivable",
+    short: "AR",
+    color: "#2E7D32",
+    struggles: [
+      {
+        pain: "Manual customer invoice posting",
+        opportunity: "Automated customer invoice posting",
+        use_case: "Create draft customer invoice accounting entries from billing data, customer master data, tax rules, revenue accounts and cost centres.",
+        impact: "Less manual posting effort, fewer accounting errors and faster revenue recognition."
+      },
+      {
+        pain: "Manual billing data collection",
+        opportunity: "Automated billing data collection",
+        use_case: "Collect billing inputs from contracts, orders, usage data, delivery milestones and operational systems into a controlled billing queue.",
+        impact: "Fewer missed billing items, faster invoice preparation and better completeness of revenue data."
+      },
+      {
+        pain: "Unreliable customer master data",
+        opportunity: "Customer master data controls",
+        use_case: "Validate customer legal details, billing addresses, tax identifiers, payment terms and contact information before invoices are issued.",
+        impact: "Fewer invoice errors, fewer rejected invoices and stronger billing governance."
+      },
+      {
+        pain: "Manual customer invoice sending",
+        opportunity: "Automated customer invoice distribution",
+        use_case: "Send customer invoices automatically by email, customer portal or EDI with delivery confirmation and audit trail.",
+        impact: "Faster invoice delivery, better evidence of communication and fewer manual sending tasks."
+      },
+      {
+        pain: "Manual payment matching",
+        opportunity: "Cash application automation",
+        use_case: "Match bank receipts to customer invoices using references and payment patterns.",
+        impact: "Faster allocation of cash."
+      },
+      {
+        pain: "Overdue invoice tracking",
+        opportunity: "Aged receivables automation",
+        use_case: "Automatically classify overdue balances by customer, risk and due date.",
+        impact: "Better collection prioritisation."
+      },
+      {
+        pain: "Manual collections review and overdue reminders",
+        opportunity: "Automated collections workflow",
+        use_case: "Review due and overdue customer balances, prioritise collections and send reminder emails or escalation notices based on ageing and customer risk.",
+        impact: "Less manual collections effort, faster follow-up and improved cash collection."
+      },
+      {
+        pain: "Dispute resolution delays",
+        opportunity: "Dispute workflow management",
+        use_case: "Route disputes to sales, operations or billing with ownership and SLA.",
+        impact: "Faster resolution and fewer overdue balances."
+      }
+    ]
+  },
+  {
+    name: "Tax",
+    short: "Tax",
+    color: "#A46A00",
+    struggles: [
+      {
+        pain: "Manual corporate income tax computation",
+        opportunity: "Automated corporate income tax calculation",
+        use_case: "Calculate corporate income tax by starting from accounting profit and applying tax adjustments, non-deductible expenses, tax incentives, temporary differences and carry-forward rules.",
+        impact: "Less manual tax calculation effort, fewer adjustment errors and stronger traceability between accounting profit, taxable income and corporate tax due."
+      },
+      {
+        pain: "Manual tax return preparation",
+        opportunity: "Tax return data automation",
+        use_case: "Populate tax return templates using ledger and invoice data.",
+        impact: "Less manual preparation and lower filing risk."
+      },
+      {
+        pain: "VAT reconciliation issues",
+        opportunity: "VAT reconciliation automation",
+        use_case: "Reconcile VAT accounts against invoice-level tax data.",
+        impact: "More reliable VAT filings."
+      },
+      {
+        pain: "Scattered tax data",
+        opportunity: "Central tax data repository",
+        use_case: "Consolidate tax-relevant data from ERP, invoices and reports.",
+        impact: "Faster tax analysis."
+      }
+    ]
+  },
+  {
+    name: "Procurement",
+    short: "Procurement",
+    color: "#B35A00",
+    struggles: [
+      {
+        pain: "Manual supplier onboarding",
+        opportunity: "Supplier onboarding workflow",
+        use_case: "Collect supplier documents, tax data and bank details through controlled forms.",
+        impact: "Faster onboarding and stronger controls."
+      },
+      {
+        pain: "Poor spend visibility",
+        opportunity: "Spend analytics dashboard",
+        use_case: "Classify spend by supplier, category, department and contract.",
+        impact: "Improved cost visibility."
+      },
+      {
+        pain: "Contract tracking issues",
+        opportunity: "Contract lifecycle tracking",
+        use_case: "Track contract owners, expiry dates, terms and renewal alerts.",
+        impact: "Lower renewal and compliance risk."
+      }
+    ]
+  },
+  {
+    name: "Internal Control",
+    short: "Internal Control",
+    color: "#7A1F1F",
+    struggles: [
+      {
+        pain: "Manual control evidence collection",
+        opportunity: "Automated evidence capture",
+        use_case: "Collect screenshots, approvals, logs and reports linked to each control.",
+        impact: "Less manual audit preparation."
+      },
+      {
+        pain: "Spreadsheet-based control tracking",
+        opportunity: "Control management platform",
+        use_case: "Track controls, owners, frequency, evidence and exceptions centrally.",
+        impact: "More reliable control environment."
+      },
+      {
+        pain: "Late issue detection",
+        opportunity: "Continuous control monitoring",
+        use_case: "Run automated checks on transactions and approvals.",
+        impact: "Earlier detection of issues."
+      }
+    ]
+  },
+  {
+    name: "Payroll / Personnel Costs",
+    short: "Payroll",
+    color: "#34556B",
+    struggles: [
+      {
+        pain: "Manual payroll accounting checks",
+        opportunity: "Payroll accounting validation",
+        use_case: "Compare payroll outputs with accounting postings and expected cost patterns.",
+        impact: "Fewer payroll posting errors."
+      },
+      {
+        pain: "Headcount reconciliation issues",
+        opportunity: "HR-finance headcount reconciliation",
+        use_case: "Reconcile HR records, payroll and finance headcount views.",
+        impact: "More reliable personnel cost reporting."
+      },
+      {
+        pain: "Manual personnel cost forecasting",
+        opportunity: "Workforce cost forecasting",
+        use_case: "Forecast salaries, hires, exits, bonuses and employer contributions.",
+        impact: "Better payroll budget control."
+      }
+    ]
+  },
+  {
+    name: "Administration",
+    short: "Administration",
+    color: "#4A5568",
+    struggles: [
+      {
+        pain: "Manual document filing",
+        opportunity: "Document management automation",
+        use_case: "Classify, store and retrieve finance documents automatically.",
+        impact: "Less time searching for documents."
+      },
+      {
+        pain: "Scattered administrative requests",
+        opportunity: "Internal request portal",
+        use_case: "Centralise finance admin requests with status and ownership.",
+        impact: "Better service visibility."
+      },
+      {
+        pain: "Manual travel expense review",
+        opportunity: "Automated travel expense policy checks",
+        use_case: "Review travel expenses against policy rules, receipt requirements, approval limits, VAT treatment and duplicate claims before accounting approval.",
+        impact: "Less manual review effort, faster reimbursements and fewer non-compliant expense postings."
+      },
+      {
+        pain: "Poor process traceability",
+        opportunity: "Task tracking and SLA dashboard",
+        use_case: "Track requests, owners, completion status and ageing.",
+        impact: "Fewer lost tasks."
+      }
+    ]
+  },
+  {
+    name: "Corporate Finance",
+    short: "Corporate Finance",
+    color: "#5B6472",
+    struggles: [
+      {
+        pain: "Manual accounting consolidation",
+        opportunity: "Automated financial consolidation process",
+        use_case: "Consolidate entity trial balances, intercompany eliminations, currency translation, ownership adjustments and group reporting packs in a controlled workflow.",
+        impact: "Faster group close, fewer consolidation errors and better traceability from local accounts to consolidated financial statements."
+      },
+      {
+        pain: "Manual investment case preparation",
+        opportunity: "Standardised investment case workflow",
+        use_case: "Create controlled templates for business cases, assumptions, approvals, scenario analysis and supporting evidence.",
+        impact: "More consistent investment decisions and faster review cycles."
+      },
+      {
+        pain: "Manual debt and covenant tracking",
+        opportunity: "Debt and covenant monitoring dashboard",
+        use_case: "Track debt balances, repayment schedules, covenant thresholds, interest rates and upcoming reporting deadlines.",
+        impact: "Earlier visibility of financing obligations and reduced covenant monitoring risk."
+      },
+      {
+        pain: "Fragmented M&A or project documentation",
+        opportunity: "Corporate finance project data room",
+        use_case: "Centralise project documents, valuation files, approvals, due diligence requests and status tracking.",
+        impact: "Better governance, clearer ownership and faster access to critical transaction information."
+      }
+    ]
+  }
+];
+
+const cfoAreaIndex = areas.findIndex(area => area.short === "CFO");
+if (cfoAreaIndex > -1) {
+  areas.push(...areas.splice(cfoAreaIndex, 1));
+}
+
+const page = document.querySelector(".page");
+const panel = document.getElementById("panel");
+const floorStack = document.getElementById("floorStack");
+const areaTitle = document.getElementById("areaTitle");
+const areaSubtitle = document.getElementById("areaSubtitle");
+const painList = document.getElementById("painList");
+const strugglesView = document.getElementById("strugglesView");
+const opportunityView = document.getElementById("opportunityView");
+const outputDetailView = document.getElementById("outputDetailView");
+const detailCard = document.getElementById("detailCard");
+const outputDetailCard = document.getElementById("outputDetailCard");
+const backButton = document.getElementById("backButton");
+const outputBackButton = document.getElementById("outputBackButton");
+const homeButton = document.getElementById("homeButton");
+const imageModal = document.getElementById("imageModal");
+const imageModalImg = document.getElementById("imageModalImg");
+const imageModalClose = document.getElementById("imageModalClose");
+const suggestionButton = document.getElementById("suggestionButton");
+
+let currentAreaIndex = null;
+let currentPainIndex = null;
+const suggestionFormUrl = "https://forms.gle/s9uxNy8Vasj1ska27";
+
+const unlockedManualStruggles = new Set([
+  "Limited visibility into finance team wellbeing",
+  "Limited team knowledge sharing",
+  "Poor and inconsistent finance onboarding",
+  "Unstructured task management",
+  "No clear delivery calendar",
+  "Manual executive reporting"
+]);
+
+function isManualStruggleUnlocked(item) {
+  return unlockedManualStruggles.has(item.pain);
+}
+
+function getAutomationMethod(item) {
+  const text = (item.pain + " " + item.opportunity + " " + item.use_case).toLowerCase();
+
+  if (text.includes("finance team wellbeing visibility")) {
+    return "Collect quarterly wellbeing responses through Google Forms, store them automatically in Google Sheets, refresh the Tableau dashboard from the survey dataset, and monitor wellbeing scores by team, manager relationship, cross-functional collaboration, location and finance subarea.";
+  }
+
+  if (text.includes("invoice") || text.includes("ocr")) {
+    return "Capture structured data automatically, validate it against ERP rules, route exceptions to the right owner and keep process status visible until completion.";
+  }
+
+  if (text.includes("bank") || text.includes("cash") || text.includes("treasury") || text.includes("liquidity")) {
+    return "Connect bank feeds and finance data, refresh the cash position automatically, detect exceptions and generate forecast or liquidity alerts.";
+  }
+
+  if (text.includes("forecast") || text.includes("budget") || text.includes("scenario") || text.includes("variance") || text.includes("kpi")) {
+    return "Connect ERP and operational data into a planning model, automate recurring updates and use analytics or AI commentary to explain key movements.";
+  }
+
+  if (text.includes("reconciliation") || text.includes("matching")) {
+    return "Use rule-based and AI-assisted matching to compare records, highlight exceptions and create a controlled workflow for unresolved items.";
+  }
+
+  if (text.includes("tax") || text.includes("vat") || text.includes("filing")) {
+    return "Extract tax-relevant data from accounting records, validate tax rules, maintain evidence and prepare review-ready compliance outputs.";
+  }
+
+  return "Structure the process into a controlled workflow, automate data capture and validation, and use dashboards or AI assistance to monitor exceptions.";
+}
+
+function getTechnologyTools(item) {
+  const text = (item.pain + " " + item.opportunity + " " + item.use_case).toLowerCase();
+
+  if (text.includes("invoice") || text.includes("ocr") || text.includes("accounts payable")) {
+    return ["Workflow automation", "OCR / IDP tools", "ERP AP automation", "Approval workflow", "Duplicate detection", "Supplier portal", "Power BI / dashboard"];
+  }
+
+  if (text.includes("receivables") || text.includes("customer") || text.includes("cash application")) {
+    return ["Workflow automation", "Cash application software", "Bank feed integration", "AR automation", "Customer portal", "Dunning workflow", "Power BI / dashboard"];
+  }
+
+  if (text.includes("bank") || text.includes("cash") || text.includes("treasury")) {
+    return ["Workflow automation", "Bank APIs / EBICS", "Treasury Management System", "Cash forecasting model", "ERP bank module", "Alerting workflow", "Power BI / dashboard"];
+  }
+
+  if (text.includes("forecast") || text.includes("budget") || text.includes("scenario")) {
+    return ["Workflow automation", "EPM / planning tool", "ERP data connector", "Driver-based model", "Scenario engine", "AI commentary", "Power BI / dashboard"];
+  }
+
+  if (text.includes("tax") || text.includes("vat")) {
+    return ["Workflow automation", "Tax compliance software", "VAT validation rules", "ERP tax codes", "Document repository", "Workflow approvals", "Audit trail"];
+  }
+
+  return ["Workflow automation", "ERP integration", "Document repository", "Validation rules", "AI assistant", "Dashboard"];
+}
+
+function renderFloors() {
+  floorStack.innerHTML = areas.map((area, index) => `
+    <button
+      class="floor-button"
+      data-index="${index}"
+      style="--area-color:${area.color};"
+    >
+      ${area.name}
+    </button>
+  `).join("");
+
+  document.querySelectorAll(".floor-button").forEach(button => {
+    button.addEventListener("click", () => {
+      renderArea(Number(button.dataset.index));
+    });
+  });
+}
+
+function renderArea(index) {
+  currentAreaIndex = index;
+  const area = areas[index];
+
+  page.classList.add("has-selection", "area-overview");
+  page.classList.remove("has-detail");
+  panel.classList.remove("hidden");
+  document.documentElement.style.setProperty("--active", area.color);
+
+  document.querySelectorAll(".floor-button").forEach((button, i) => {
+    button.classList.toggle("active", i === index);
+  });
+
+  areaTitle.textContent = area.name;
+  areaSubtitle.textContent = area.short + " · select one manual struggle";
+
+  strugglesView.classList.remove("hidden");
+  opportunityView.classList.add("hidden");
+  outputDetailView.classList.add("hidden");
+
+  painList.innerHTML = area.struggles.map((item, painIndex) => `
+    <button class="pain-button ${isManualStruggleUnlocked(item) ? "unlocked" : "locked"}" data-pain-index="${painIndex}">
+      ${item.pain}
+    </button>
+  `).join("");
+
+  document.querySelectorAll(".pain-button").forEach(button => {
+    button.addEventListener("click", () => {
+      renderPain(Number(button.dataset.painIndex));
+    });
+  });
+
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    requestAnimationFrame(() => {
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+}
+
+function renderPain(index) {
+  currentPainIndex = index;
+  const item = areas[currentAreaIndex].struggles[index];
+  const isUnlocked = isManualStruggleUnlocked(item);
+  const method = getAutomationMethod(item);
+  const tools = getTechnologyTools(item);
+  const renderParagraphs = paragraphs => paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
+  const renderOutput = (output, outputIndex) => {
+    if (typeof output !== "string") {
+      if (output.locked) {
+        return `<li><span class="output-page-disabled">${output.label}</span><span class="output-page-status">Coming soon</span>: ${output.description}</li>`;
+      }
+      if (output.anchor) {
+        return `<li><button class="output-page-button" type="button" data-output-index="${outputIndex}">${output.label}</button>: ${output.description}</li>`;
+      }
+      return `<li><a href="${output.href}" target="_blank" rel="noopener noreferrer">${output.label}</a></li>`;
+    }
+
+    const separatorIndex = output.indexOf(":");
+    if (separatorIndex === -1) {
+      return `<li>${output}</li>`;
+    }
+
+    const label = output.slice(0, separatorIndex);
+    const description = output.slice(separatorIndex + 1).trim();
+    return `<li><strong>${label}</strong>: ${description}</li>`;
+  };
+
+  strugglesView.classList.add("hidden");
+  opportunityView.classList.remove("hidden");
+  outputDetailView.classList.add("hidden");
+  page.classList.remove("area-overview");
+  page.classList.add("has-detail");
+
+  if (!isUnlocked) {
+    detailCard.innerHTML = `
+      <p class="detail-label">Manual struggle</p>
+      <h3 class="detail-main">${item.pain}</h3>
+
+      <div class="detail-box locked-card">
+        <h4>Content locked</h4>
+        <p>This automation journey item is visible as a future opportunity, but the detailed content has not been unlocked yet.</p>
+      </div>
+    `;
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      requestAnimationFrame(() => {
+        opportunityView.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+    return;
+  }
+
+  detailCard.innerHTML = item.manualDescription ? `
+    <p class="detail-label">Manual struggle</p>
+    <h3 class="detail-main">${item.pain}</h3>
+
+    <div class="detail-box">
+      <h4>Description</h4>
+      ${renderParagraphs(item.manualDescription)}
+    </div>
+
+    <div class="detail-box">
+      <h4>Technology / tools</h4>
+      ${renderParagraphs(item.technologyTools)}
+    </div>
+
+    <div class="detail-box">
+      <h4>Automation opportunity</h4>
+      ${renderParagraphs(item.automationOpportunity)}
+    </div>
+
+    <div class="detail-box">
+      <h4>Expected impact</h4>
+      ${renderParagraphs(item.expectedImpact)}
+    </div>
+
+    ${item.outputsExamples ? `
+      <div class="detail-box">
+        <h4>${item.outputsTitle || "Outputs / examples"}</h4>
+        <ul class="proposal-list">
+          ${item.outputsExamples.map(renderOutput).join("")}
+        </ul>
+        ${item.outputsPreview ? `<a class="proposal-preview-link" href="${item.outputsPreview}" target="_blank" rel="noopener noreferrer"><img class="proposal-preview" src="${item.outputsPreview}" alt="${item.outputsPreviewAlt || "Outputs example preview"}"></a>` : ""}
+      </div>
+    ` : ""}
+
+    ${item.proposalTasks ? `
+      <div class="detail-box">
+        <h4>Proposed work</h4>
+        <ul class="proposal-list">
+          ${item.proposalTasks.map(task => `<li>${task}</li>`).join("")}
+        </ul>
+        ${item.proposalResources ? `
+          <div class="proposal-links">
+            ${item.proposalResources.map(resource => `<a href="${resource.href}" target="_blank" rel="noopener noreferrer">${resource.label}</a>`).join("")}
+          </div>
+        ` : ""}
+        ${item.proposalPreview ? `<a class="proposal-preview-link" href="${item.proposalPreview}" target="_blank" rel="noopener noreferrer"><img class="proposal-preview" src="${item.proposalPreview}" alt="Finance team wellbeing dashboard preview"></a>` : ""}
+      </div>
+    ` : ""}
+  ` : `
+    <p class="detail-label">Manual struggle</p>
+    <h3 class="detail-main">${item.pain}</h3>
+
+    <div class="detail-box">
+      <h4>Existing technology / tools</h4>
+      <div class="tool-grid">
+        ${tools.map(tool => `<span class="tool-pill">${tool}</span>`).join("")}
+      </div>
+    </div>
+
+    <div class="detail-box">
+      <h4>Automation opportunity</h4>
+      <p>${item.opportunity}</p>
+    </div>
+
+    <div class="detail-box">
+      <h4>How automation would work</h4>
+      <p>${method}</p>
+    </div>
+
+    <div class="detail-box">
+      <h4>Use case</h4>
+      <p>${item.use_case}</p>
+    </div>
+
+    <div class="detail-box">
+      <h4>Expected impact</h4>
+      <p>${item.impact}</p>
+    </div>
+
+    ${item.proposalTasks ? `
+      <div class="detail-box">
+        <h4>Proposed work</h4>
+        <ul class="proposal-list">
+          ${item.proposalTasks.map(task => `<li>${task}</li>`).join("")}
+        </ul>
+        ${item.proposalResources ? `
+          <div class="proposal-links">
+            ${item.proposalResources.map(resource => `<a href="${resource.href}" target="_blank" rel="noopener noreferrer">${resource.label}</a>`).join("")}
+          </div>
+        ` : ""}
+        ${item.proposalPreview ? `<a class="proposal-preview-link" href="${item.proposalPreview}" target="_blank" rel="noopener noreferrer"><img class="proposal-preview" src="${item.proposalPreview}" alt="Finance team wellbeing dashboard preview"></a>` : ""}
+      </div>
+    ` : ""}
+  `;
+
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    requestAnimationFrame(() => {
+      opportunityView.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+}
+
+function renderOutputPage(outputIndex) {
+  if (currentAreaIndex === null || currentPainIndex === null) return;
+
+  const item = areas[currentAreaIndex].struggles[currentPainIndex];
+  const outputPage = item.outputPages && item.outputPages[outputIndex];
+  if (!outputPage) return;
+
+  const renderParagraphs = paragraphs => paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
+
+  strugglesView.classList.add("hidden");
+  opportunityView.classList.add("hidden");
+  outputDetailView.classList.remove("hidden");
+  page.classList.remove("area-overview");
+  page.classList.add("has-detail");
+
+  outputDetailCard.innerHTML = `
+    <p class="detail-label">Manual executive reporting output</p>
+    <h3 class="detail-main">${outputPage.title}</h3>
+
+    <div class="detail-box">
+      <h4>What has been done</h4>
+      ${renderParagraphs(outputPage.paragraphs)}
+    </div>
+
+    ${outputPage.prompt ? `
+      <div class="detail-box">
+        <h4>Structured prompt</h4>
+        <p>${outputPage.prompt}</p>
+      </div>
+    ` : ""}
+
+    ${outputPage.downloads ? `
+      <div class="detail-box">
+        <h4>Downloadable workbooks</h4>
+        <ul class="proposal-list">
+          ${outputPage.downloads.map(file => `<li><a href="${file.href}" target="_blank" rel="noopener noreferrer">${file.label}</a></li>`).join("")}
+        </ul>
+      </div>
+    ` : ""}
+  `;
+
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    requestAnimationFrame(() => {
+      outputDetailView.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+}
+
+function resetHome() {
+  currentAreaIndex = null;
+  currentPainIndex = null;
+  page.classList.remove("has-selection", "area-overview", "has-detail");
+  panel.classList.add("hidden");
+
+  document.querySelectorAll(".floor-button").forEach(button => {
+    button.classList.remove("active");
+  });
+
+  strugglesView.classList.remove("hidden");
+  opportunityView.classList.add("hidden");
+  outputDetailView.classList.add("hidden");
+
+  areaTitle.textContent = "";
+  areaSubtitle.textContent = "";
+  painList.innerHTML = "";
+  detailCard.innerHTML = "";
+  outputDetailCard.innerHTML = "";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+backButton.addEventListener("click", () => {
+  strugglesView.classList.remove("hidden");
+  opportunityView.classList.add("hidden");
+  outputDetailView.classList.add("hidden");
+  page.classList.add("area-overview");
+  page.classList.remove("has-detail");
+});
+
+outputBackButton.addEventListener("click", () => {
+  if (currentPainIndex === null) return;
+  renderPain(currentPainIndex);
+});
+
+homeButton.addEventListener("click", resetHome);
+
+detailCard.addEventListener("click", event => {
+  const outputButton = event.target.closest(".output-page-button");
+  if (!outputButton) return;
+  renderOutputPage(Number(outputButton.dataset.outputIndex));
+});
+
+detailCard.addEventListener("click", event => {
+  const image = event.target.closest(".proposal-preview");
+  if (!image) return;
+  if (window.matchMedia("(max-width: 900px)").matches) return;
+  event.preventDefault();
+
+  imageModalImg.src = image.src;
+  imageModalImg.alt = image.alt;
+  imageModal.classList.remove("hidden");
+  imageModal.setAttribute("aria-hidden", "false");
+});
+
+function closeImageModal() {
+  imageModal.classList.add("hidden");
+  imageModal.setAttribute("aria-hidden", "true");
+  imageModalImg.src = "";
+  imageModalImg.alt = "";
+}
+
+imageModalClose.addEventListener("click", closeImageModal);
+
+imageModal.addEventListener("click", event => {
+  if (event.target === imageModal) {
+    closeImageModal();
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !imageModal.classList.contains("hidden")) {
+    closeImageModal();
+  }
+});
+
+suggestionButton.addEventListener("click", () => {
+  if (!suggestionFormUrl) {
+    alert("Suggestion form coming soon. Share the Google Form link to connect this button.");
+    return;
+  }
+
+  window.open(suggestionFormUrl, "_blank", "noopener,noreferrer");
+});
+
+renderFloors();
+</script>
+</body>
+</html>
