@@ -2025,8 +2025,8 @@ const areas = [
       },
       {
         pain: "Delayed variance analysis",
+        showResourceAtTop: true,
         manualDescription: [
-          "<a class=\"proposal-app-link\" href=\"https://abarriosgranado.github.io/SaaS-Signals-Board/\" target=\"_blank\" rel=\"noopener noreferrer\"><div><strong>Open SaaS Signals Board - live dashboard</strong><span>See the range, momentum, persistence and baseline-shift signals in action on real MRR, ARPU, customer and churn data.</span></div><em class=\"proposal-app-badge\">Live demo</em></a>",
           "Variance analysis is usually a month-end activity. An analyst compares actuals against budget, forecast or prior period, tries to notice which movements look unusual, and then spends time investigating and explaining them. By the time a real problem is caught, several weeks may have passed since the underlying movement actually started.",
           "The bigger issue is that 'unusual' is rarely defined consistently. Without a repeatable statistical baseline, the same 2-point move in a KPI can look alarming for one metric or one business and completely routine for another, so the judgment of what deserves investigation depends on whoever is looking at the report that month.",
           "This delay and inconsistency mean that FP&A often reacts to problems after they have already compounded, instead of catching the early signal while there is still time to investigate the driver and respond."
@@ -3117,6 +3117,12 @@ function renderPain(index, options = {}) {
   detailCard.innerHTML = item.manualDescription ? `
     <p class="detail-label">Manual struggle</p>
     <h3 class="detail-main">${item.pain}</h3>
+
+    ${item.showResourceAtTop && item.proposalResources && item.proposalResources[0] ? `
+      <div class="proposal-links">
+        ${renderProposalResource(item.proposalResources[0])}
+      </div>
+    ` : ""}
 
     <div class="detail-box">
       <h4>Description</h4>
