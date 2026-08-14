@@ -2025,9 +2025,49 @@ const areas = [
       },
       {
         pain: "Delayed variance analysis",
-        opportunity: "Automated variance commentary",
-        use_case: "Detect key budget vs actual movements and draft explanations.",
-        impact: "Faster insight generation."
+        manualDescription: [
+          "Variance analysis is usually a month-end activity. An analyst compares actuals against budget, forecast or prior period, tries to notice which movements look unusual, and then spends time investigating and explaining them. By the time a real problem is caught, several weeks may have passed since the underlying movement actually started.",
+          "The bigger issue is that 'unusual' is rarely defined consistently. Without a repeatable statistical baseline, the same 2-point move in a KPI can look alarming for one metric or one business and completely routine for another, so the judgment of what deserves investigation depends on whoever is looking at the report that month.",
+          "This delay and inconsistency mean that FP&A often reacts to problems after they have already compounded, instead of catching the early signal while there is still time to investigate the driver and respond."
+        ],
+        technologyTools: [
+          "Several FP&A and EPM platforms already build variance analysis and commentary into their core workflow. OneStream and Datarails are known specifically for automating variance commentary and driver-based explanations, while Planful, Workday Adaptive Planning and Anaplan support structured actual-vs-budget and actual-vs-forecast variance views.",
+          "Pigment, Abacum and Vena focus on connecting live financial data to planning and reporting, with variance dashboards that update automatically as actuals are loaded, reducing the manual comparison work analysts used to do in spreadsheets.",
+          "Outside dedicated FP&A platforms, teams commonly build variance views in Excel, Power BI, Tableau or Looker Studio, and increasingly use AI assistants such as ChatGPT, Microsoft Copilot, Gemini or Claude to draft a first pass of variance commentary from the numbers."
+        ],
+        automationOpportunity: [
+          "SaaS Signals Board, an open-source Python project built for this journey, applies technical-analysis style signal detection to recurring SaaS KPIs: MRR growth, ARPU growth, active customer growth, customer churn and revenue churn. It is built with Python and pandas for the metrics pipeline, and ships as a self-contained interactive HTML dashboard, so it can be hosted for free on GitHub Pages without a backend or database.",
+          "The detection layer combines four statistical techniques: Bollinger-style range bands on rolling averages and volatility, momentum versus the previous period and the same period last year, persistence to separate a one-off blip from a repeating pattern, and a baseline-shift check that compares a recent short window against the prior longer baseline to flag when the 'normal' level itself may have moved.",
+          "Important nuance: this is not the same as classic budget-variance analysis. Instead of comparing actuals to a static budget or forecast, the model compares each KPI against its own recent statistical behaviour, so the expected range adapts automatically as the business grows instead of relying on a fixed threshold someone has to keep updating manually. That makes it a complementary early-signal layer, not a replacement for the actual-vs-budget review: it is designed to catch an abnormal movement while it is happening, in plain language, so the classic variance conversation at month-end starts from an already-investigated signal instead of a cold read of the numbers.",
+          "Ratios calculated on a small customer or revenue base are automatically flagged as low-confidence rather than presented as a clean number, and known one-off business events (a price change, a large enterprise deal) can be annotated so the model does not keep raising the same explained movement as a new anomaly every month."
+        ],
+        expectedImpact: [
+          "Earlier visibility of abnormal movements, generated automatically instead of waiting for someone to notice them during the close.",
+          "A plain-language explanation attached to each signal, so the first draft of 'why did this move' is already written before the analyst opens the file.",
+          "A clearer distinction between one-off noise, a persisting trend and a genuine change in the business's new normal, instead of a single flat threshold applied to every KPI."
+        ],
+        opportunity: "Statistical early-signal layer for SaaS variance detection",
+        use_case: "SaaS Signals Board flags MRR, ARPU, customer and churn movements that break their own statistical range, explains the direction and duration of the move, and highlights when the underlying baseline itself may have shifted.",
+        impact: "Earlier, explained signals instead of a manual month-end search for what looks unusual.",
+        proposalTasks: [
+          "Built an open-source signal-detection layer (SaaS Signals Board) applying range, momentum, persistence and baseline-shift checks to five core SaaS KPIs.",
+          "Moved the range check from raw metric levels to period-over-period growth rates, so high-growth periods are not flagged as false anomalies.",
+          "Added caution flags for churn and revenue-churn ratios calculated on a small starting customer or MRR base.",
+          "Smoothed LTV over a trailing 6-period churn average to reduce single-month noise.",
+          "Added a baseline-shift signal comparing the last 3 periods against the prior 12 to separate an isolated blip from a real change in the normal level.",
+          "Added support for annotating known business events so explained movements are not re-flagged as new anomalies.",
+          "Published the interactive dashboard and full source code."
+        ],
+        proposalResources: [
+          {
+            label: "SaaS Signals Board - live dashboard",
+            href: "https://abarriosgranado.github.io/SaaS-Signals-Board/"
+          },
+          {
+            label: "SaaS Signals Board - source code on GitHub",
+            href: "https://github.com/abarriosgranado/SaaS-Signals-Board"
+          }
+        ]
       },
       {
         pain: "Weak scenario analysis",
@@ -2687,6 +2727,7 @@ const unlockedManualStruggles = new Set([
   "Unstructured task management",
   "No clear delivery calendar",
   "Manual executive reporting",
+  "Delayed variance analysis",
   "Manual supplier invoice reception",
   "Manual organisation of supplier invoices",
   "Lack of approval workflow and visibility",
