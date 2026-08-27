@@ -648,53 +648,6 @@ html {
   white-space: nowrap;
 }
 
-.live-demo-link {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px 18px;
-  align-items: center;
-  padding: 18px 20px;
-  border: 1px solid rgba(31, 138, 76, .26);
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(220, 252, 231, .92), rgba(239, 246, 255, .95));
-  color: var(--navy);
-  text-decoration: none;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
-}
-
-.live-demo-link:hover {
-  border-color: rgba(31, 138, 76, .5);
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-.live-demo-link strong {
-  display: block;
-  color: var(--navy);
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.live-demo-link span {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.35;
-  font-weight: 750;
-}
-
-.live-demo-badge {
-  border-radius: 999px;
-  padding: 10px 18px;
-  background: #1f8a4c;
-  color: #fff;
-  font-size: 15px;
-  font-style: italic;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
 .proposal-preview {
   width: 100%;
   margin-top: 12px;
@@ -3047,12 +3000,12 @@ function renderPain(index, options = {}) {
   const renderDownload = file => {
     if (file.type === "app") {
       return `
-        <a class="live-demo-link" href="${file.href}" target="_blank" rel="noopener noreferrer">
+        <a class="proposal-app-link" href="${file.href}" target="_blank" rel="noopener noreferrer">
           <div>
             <strong>${file.label}</strong>
             ${file.description ? `<span>${file.description}</span>` : ""}
           </div>
-          <em class="live-demo-badge">${file.badge || "Live demo"}</em>
+          <em class="proposal-app-badge">${file.badge || "Live demo"}</em>
         </a>
       `;
     }
@@ -3409,7 +3362,6 @@ function renderOutputPage(outputIndex, options = {}) {
 
     ${outputPage.downloads ? `
       <div class="detail-box">
-        <h4>Live tools</h4>
         <div class="proposal-links">
           ${outputPage.downloads.map(renderDownload).join("")}
         </div>
