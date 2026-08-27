@@ -2679,9 +2679,100 @@ const areas = [
       },
       {
         pain: "Manual investment case preparation",
-        opportunity: "Standardised investment case workflow",
-        use_case: "Create controlled templates for business cases, assumptions, approvals, scenario analysis and supporting evidence.",
-        impact: "More consistent investment decisions and faster review cycles."
+        manualDescription: [
+          "Investment cases are often prepared manually when a company needs to approve a new project, launch an initiative, buy an asset or allocate budget. Finance usually has to collect assumptions, estimate costs, model different scenarios, calculate payback and prepare a recommendation for management.",
+          "This work is frequently done by copying old Excel files or rebuilding the analysis from scratch. Different business cases may use different templates, formulas, assumptions and formats, which makes it harder to compare projects fairly.",
+          "When assumptions change, finance has to update the model, charts, tables, commentary and presentation manually. This slows down the decision process and increases the risk that the final recommendation is based on inconsistent or outdated information."
+        ],
+        technologyTools: [
+          "Excel and Google Sheets are still useful for investment modelling, but they can be supported by Python and Streamlit to create a more structured decision tool with editable assumptions, automatic calculations, charts and downloadable reports.",
+          "A database such as Postgres or Neon can store each scenario that has been run, including the assumptions used, the results generated and the PDF report created for management review.",
+          "Dashboard tools such as Power BI, Tableau or Looker Studio can later be connected to the saved scenarios to monitor investment decisions across the company. AI assistants can also help draft plain-English summaries, recommendations and decision commentary."
+        ],
+        automationOpportunity: [
+          "Create an interactive investment case workflow where the user can enter assumptions, compare several options, run scenarios and generate a clear recommendation automatically.",
+          "The workflow can cover different types of investment decisions, such as SaaS growth projects, retention initiatives, acquisition projects or fixed asset purchases. Each case follows the same logic: assumptions, scenario analysis, KPIs, charts, recommendation and PDF output.",
+          "This turns the investment case from a static spreadsheet into a reusable decision tool. Finance spends less time formatting files and checking formulas, and more time challenging assumptions and explaining the business impact."
+        ],
+        expectedImpact: [
+          "Business cases can be prepared faster because the structure, calculations and outputs are already built into the tool.",
+          "Investment options become easier to compare because every scenario uses the same methodology, assumptions structure and KPI definitions.",
+          "Management receives a cleaner decision pack with the key numbers, the recommended option, the reason behind the recommendation and a downloadable report that can be saved or shared."
+        ],
+        opportunity: "Interactive investment case workflow",
+        use_case: "Compare investment options using editable assumptions, scenario analysis, KPIs, charts, automatic recommendations and downloadable PDF reports.",
+        impact: "Faster business case preparation, clearer investment decisions and stronger traceability across scenarios.",
+        proposalTasks: [
+          "Define the recurring investment case workflow and the decision points that finance needs to support.",
+          "Create an INSTANTER SAAS tool to compare SaaS investment projects such as retention, acquisition, pricing and customer growth initiatives.",
+          "Create an INSTANTER ASSETS tool to compare fixed asset acquisition alternatives using capex, yearly cash impact, residual value, payback and return metrics.",
+          "Add scenario history so each Run Analysis can be saved and reviewed later.",
+          "Generate downloadable PDF reports including assumptions, findings, KPIs and charts.",
+          "Publish the tools through GitHub and prepare them for Streamlit Cloud deployment."
+        ],
+        outputsExamples: [
+          {
+            label: "INSTANTER SAAS",
+            anchor: "investment-case-instanter-saas",
+            locked: false,
+            description: "A SaaS investment decision simulator comparing projects across customers, plan mix, pricing, churn improvement, revenue, ROI and payback."
+          },
+          {
+            label: "INSTANTER ASSETS",
+            anchor: "investment-case-instanter-assets",
+            locked: false,
+            description: "A fixed asset investment decision simulator comparing asset alternatives through cash flow, NPV, ROI and payback."
+          },
+          {
+            label: "Scenario History",
+            anchor: "investment-case-scenario-history",
+            locked: true,
+            description: "A saved history of all generated investment scenarios, including assumptions, outputs and downloadable PDF reports."
+          },
+          {
+            label: "Approval Pack",
+            anchor: "investment-case-approval-pack",
+            locked: true,
+            description: "A management-ready investment pack summarising the recommendation, financial impact and key risks."
+          }
+        ],
+        outputsTitle: "Outputs / examples",
+        outputPages: [
+          {
+            id: "investment-case-instanter-saas",
+            title: "INSTANTER SAAS",
+            paragraphs: [
+              "INSTANTER SAAS is a portfolio tool designed to model and compare SaaS investment projects over time. It allows the user to adjust assumptions such as current customers, new customers acquired, plan mix, prices, churn improvement and project cost.",
+              "The tool calculates revenue, net value, ROI, payback and customer impact for each project. It also compares the projects against the current scenario so the recommendation is easier to understand.",
+              "The purpose is to replace a manual investment case spreadsheet with a clearer decision experience: inputs on one side, outputs on the other, and a downloadable report that captures the scenario."
+            ],
+            downloads: [
+              {
+                label: "GitHub repository - INSTANTER SAAS",
+                href: "https://github.com/abarriosgranado/Instanter_SaaS"
+              }
+            ]
+          },
+          {
+            id: "investment-case-instanter-assets",
+            title: "INSTANTER ASSETS",
+            paragraphs: [
+              "INSTANTER ASSETS applies the same investment case logic to fixed asset decisions. It compares asset alternatives based on purchase cost, yearly revenue uplift, yearly cost savings, maintenance cost, tax, discount rate and residual value.",
+              "The tool helps answer a practical finance question: which asset creates the strongest economic case over the selected period, and how long does it take to recover the money invested?",
+              "The output includes a recommendation, simple findings, comparative KPIs, annual cash flow views and a downloadable PDF report."
+            ],
+            downloads: [
+              {
+                label: "Open Streamlit app - INSTANTER ASSETS",
+                href: "https://instanterassets-fn4nxjzfliwifjte5zczk5.streamlit.app/"
+              },
+              {
+                label: "GitHub repository - INSTANTER ASSETS",
+                href: "https://github.com/abarriosgranado/Instanter_assets"
+              }
+            ]
+          }
+        ]
       },
       {
         pain: "Manual debt and covenant tracking",
@@ -2734,6 +2825,7 @@ const unlockedManualStruggles = new Set([
   "Unstructured task management",
   "No clear delivery calendar",
   "Manual executive reporting",
+  "Manual investment case preparation",
   "Delayed variance analysis",
   "Manual supplier invoice reception",
   "Manual organisation of supplier invoices",
@@ -3249,7 +3341,7 @@ function renderOutputPage(outputIndex, options = {}) {
   outputDetailView.classList.remove("hidden");
 
   outputDetailCard.innerHTML = `
-    <p class="detail-label">Manual executive reporting output</p>
+    <p class="detail-label">${item.pain} output</p>
     <h3 class="detail-main">${outputPage.title}</h3>
 
     <div class="detail-box">
