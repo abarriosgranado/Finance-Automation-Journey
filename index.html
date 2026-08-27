@@ -2843,6 +2843,21 @@ function renderProposalResource(resource) {
   return `<a href="${resource.href}" target="_blank" rel="noopener noreferrer">${resource.label}</a>`;
 }
 
+function renderDownload(file) {
+  if (file.type === "app") {
+    return `
+      <a class="proposal-app-link" href="${file.href}" target="_blank" rel="noopener noreferrer">
+        <div>
+          <strong>${file.label}</strong>
+          ${file.description ? `<span>${file.description}</span>` : ""}
+        </div>
+        <em class="proposal-app-badge">${file.badge || "Live demo"}</em>
+      </a>
+    `;
+  }
+  return `<ul class="proposal-list"><li><a href="${file.href}" target="_blank" rel="noopener noreferrer">${file.label}</a></li></ul>`;
+}
+
 function getAutomationMethod(item) {
   const text = (item.pain + " " + item.opportunity + " " + item.use_case).toLowerCase();
 
@@ -2997,20 +3012,6 @@ function renderPain(index, options = {}) {
   const method = getAutomationMethod(item);
   const tools = getTechnologyTools(item);
   const renderParagraphs = paragraphs => paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
-  const renderDownload = file => {
-    if (file.type === "app") {
-      return `
-        <a class="proposal-app-link" href="${file.href}" target="_blank" rel="noopener noreferrer">
-          <div>
-            <strong>${file.label}</strong>
-            ${file.description ? `<span>${file.description}</span>` : ""}
-          </div>
-          <em class="proposal-app-badge">${file.badge || "Live demo"}</em>
-        </a>
-      `;
-    }
-    return `<ul class="proposal-list"><li><a href="${file.href}" target="_blank" rel="noopener noreferrer">${file.label}</a></li></ul>`;
-  };
   const renderOutput = (output, outputIndex) => {
     if (typeof output !== "string") {
       const outputLink = output.anchor
