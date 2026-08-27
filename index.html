@@ -648,6 +648,51 @@ html {
   white-space: nowrap;
 }
 
+#outputDetailCard .proposal-app-link {
+  min-height: 112px;
+  padding: 22px 26px;
+  gap: 16px 28px;
+}
+
+#outputDetailCard .proposal-app-link strong {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+#outputDetailCard .proposal-app-link .output-page-highlight {
+  display: inline;
+  border-radius: 6px;
+  padding: 2px 8px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+#outputDetailCard .proposal-app-link span {
+  margin-top: 10px;
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+#outputDetailCard .proposal-app-badge {
+  padding: 12px 22px;
+  font-size: 18px;
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  #outputDetailCard .proposal-app-link {
+    grid-template-columns: 1fr;
+  }
+
+  #outputDetailCard .proposal-app-badge {
+    justify-self: start;
+  }
+}
+
 .proposal-preview {
   width: 100%;
   margin-top: 12px;
