@@ -2124,36 +2124,36 @@ const areas = [
       {
         pain: "Weak scenario analysis",
         manualDescription: [
-          "Scenario analysis is often built manually in Excel by copying a base case, changing a few assumptions and preparing upside or downside versions for discussion. The finance team may compare revenue growth, margins, costs, working capital, headcount, cash flow or covenant impacts, but the underlying assumptions are not always challenged with the same discipline as the final numbers.",
-          "The weak point is not only the scenario calculation itself. It is the lack of a structured challenge layer around the input data, assumptions, evidence and ownership behind each case. A downside scenario can look technically complete while still relying on unexplained movements, incomplete datasets, outdated assumptions or figures that nobody has formally reviewed.",
-          "As a result, scenario analysis can become a spreadsheet exercise instead of a controlled decision process. Management sees base, upside and downside outputs, but finance may not have a clear record of which assumptions were challenged, who validated them, what evidence supported them and which open questions remain before using the scenario."
+          "Scenario analysis is often only as strong as the dataset behind it. A company may be modelling growth, retention, pricing, campaign ROI, conversion, sales pipeline, customer behaviour, product adoption or workforce capacity, but the data feeding those decisions is rarely challenged in a structured way before it becomes a management story.",
+          "The most valuable datasets are usually the ones closest to commercial decisions: customers at risk of churn, accounts likely to expand, campaigns that look profitable, products with changing usage patterns, regions with margin pressure, leads moving through the funnel, or teams where attrition could affect delivery. These datasets can create powerful scenarios, but they can also mislead if outliers, missing fields, duplicated records, weak segments or unexplained movements are not challenged first.",
+          "As a result, scenario analysis can become a confident narrative built on untested data. Management sees a base case, upside case or downside case, but may not know which assumptions were properly questioned, which business owner validated the evidence, and which risks are still hidden inside the dataset."
         ],
         technologyTools: [
-          "Several FP&A and planning platforms can support scenario modelling, including Pigment, Abacum, Anaplan, Workday Adaptive Planning, Planful, Board and Vena. These tools are useful for building connected driver-based models, running multiple versions and comparing outputs across assumptions.",
-          "However, scenario analysis also needs a challenge and governance layer. Data Challenger, the Flask prototype created for this journey, focuses on that control layer: it reviews uploaded CSV or Excel files, detects suspicious patterns, generates evidence-backed findings, assigns each question to a reviewer and creates a response loop before the analysis is treated as ready.",
-          "This can be complemented with Excel or Google Sheets for modelling, Power BI or Tableau for scenario dashboards, and AI assistants such as ChatGPT, Claude, Gemini or Microsoft Copilot for drafting challenge questions, summarising reviewer responses and preparing management commentary."
+          "Scenario modelling can be supported by FP&A and planning platforms such as Pigment, Abacum, Anaplan, Workday Adaptive Planning, Planful, Board and Vena. For commercial and operational datasets, teams may also use CRM, marketing analytics, product analytics, HRIS, support platforms, ERP extracts, Excel, Google Sheets, Power BI, Tableau or Looker Studio.",
+          "Data Challenger, the Flask prototype created for this journey, sits before the dashboard or model as a data-challenge layer. It can review any CSV or Excel dataset, detect suspicious patterns, generate evidence-backed findings, assign each question to a reviewer and create a response loop before the dataset is trusted as an input for decisions.",
+          "AI assistants such as ChatGPT, Claude, Gemini or Microsoft Copilot can complement the workflow by helping draft sharper challenge questions, summarise reviewer answers and convert validated findings into management-ready scenario commentary."
         ],
         automationOpportunity: [
-          "Use Data Challenger as a scenario-assumption review workflow before scenario outputs are presented to management. Instead of accepting the base, upside and downside files as final, finance can upload the source dataset or assumption file and receive a structured challenge report showing what looks incomplete, unusual, inconsistent or strategically important.",
-          "Each finding is converted into a specific question and assigned to a named reviewer. For example, HR may need to explain turnover assumptions, sales may need to validate volume growth, procurement may need to confirm cost inflation, and treasury may need to review FX, liquidity or covenant assumptions.",
-          "The workflow turns scenario analysis into a governed review cycle: upload the data, identify weak assumptions, route questions to owners, collect responses and export a PDF report with the challenge trail. This makes the scenario pack more auditable and helps finance distinguish between calculated outputs and assumptions that still need evidence.",
-          "Data Challenger does not replace the financial model or scenario dashboard. It sits before them as a challenge layer, making sure the data and assumptions feeding the model are questioned before the CFO or management team relies on the scenario."
+          "Use Data Challenger as a pre-scenario challenge workflow for high-value business datasets. Instead of starting with a model, the team starts by uploading the dataset that will drive the scenario: customer churn, pricing, campaign performance, pipeline conversion, employee attrition, product usage, supplier risk, margin leakage or any other dataset that could change a strategic decision.",
+          "The tool converts data quality signals and unusual patterns into business questions. For example, Sales can be asked why a region has a sudden pipeline drop, Marketing can validate whether a campaign's conversion rate is real or distorted by incomplete tracking, HR can explain attrition hotspots, and Product can confirm whether a usage spike is adoption or a data issue.",
+          "The workflow turns scenario analysis into a challenge-led decision journey: upload the data, identify weak signals, route questions to owners, collect responses and export a PDF trail before the dataset feeds the base, upside or downside case. This makes the final scenario more credible because the assumptions have been tested before the story is written.",
+          "Data Challenger does not replace planning tools, dashboards or financial models. It makes them stronger by challenging the commercial and operational evidence underneath them."
         ],
         expectedImpact: [
-          "Stronger scenario governance because assumptions are challenged, assigned and documented before the scenario is used in decision-making.",
-          "Better quality discussions with business owners, since each scenario question is linked to evidence instead of being raised informally during a meeting.",
-          "More confidence in base, upside and downside cases because finance can show not only the model outputs, but also the review trail behind the assumptions."
+          "More credible scenarios because the source data is challenged before it becomes a forecast, dashboard or management recommendation.",
+          "Better commercial discussions because each question is linked to evidence and routed to the person who can explain the business reality behind the number.",
+          "A stronger decision trail showing which datasets were reviewed, which risks were identified, which owners responded and which assumptions are safe enough to use."
         ],
-        opportunity: "Scenario assumption challenge workflow",
-        use_case: "Data Challenger reviews scenario input files, flags weak assumptions or unusual patterns, assigns challenge questions to reviewers and captures responses before the scenario model or dashboard is finalised.",
-        impact: "More reliable scenario analysis, stronger assumption governance and clearer evidence behind strategic planning decisions.",
+        opportunity: "Data challenge layer for strategic scenario analysis",
+        use_case: "Data Challenger reviews high-value business datasets such as churn, pricing, campaigns, pipeline, product usage, attrition or margin data, flags weak signals or unusual patterns, assigns challenge questions to reviewers and captures responses before the scenario is finalised.",
+        impact: "More credible scenarios, stronger evidence behind strategic decisions and better business-owner accountability for the data that drives the story.",
         proposalTasks: [
           "Built the Data Challenger Flask prototype as an open-source review workflow for CSV and Excel files.",
           "Created auto-detection logic for columns such as dates, amounts, categories and HR-specific fields.",
-          "Added an HR turnover domain pack to challenge attrition, overtime, early leavers, salary, tenure and department-level hotspots.",
+          "Added an HR turnover domain pack as the first example of a challengeable business dataset, covering attrition, overtime, early leavers, salary, tenure and department-level hotspots.",
           "Created a reviewer master-data file with routing rules so findings can be assigned to named owners.",
           "Added tokenised response links so each reviewer can answer a specific challenge question.",
-          "Added PDF export so finance can retain the scenario challenge trail with the final analysis.",
+          "Added PDF export so the team can retain the data challenge trail with the final scenario or management pack.",
           "Prepared the project for web deployment with Flask, Gunicorn and Render configuration."
         ],
         proposalResources: [
