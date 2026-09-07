@@ -2130,7 +2130,7 @@ const areas = [
         ],
         technologyTools: [
           "Scenario modelling can be supported by FP&A and planning platforms such as Pigment, Abacum, Anaplan, Workday Adaptive Planning, Planful, Board and Vena. For commercial and operational datasets, teams may also use CRM, marketing analytics, product analytics, HRIS, support platforms, ERP extracts, Excel, Google Sheets, Power BI, Tableau or Looker Studio.",
-          "Data Challenger, the Flask prototype created for this journey, sits before the dashboard or model as a data-challenge layer. It can review any CSV or Excel dataset, detect suspicious patterns, generate evidence-backed findings, assign each question to a reviewer and create a response loop before the dataset is trusted as an input for decisions.",
+          "Data Challenger, the Flask prototype created for this journey, sits before the dashboard or model as a data-challenge layer. It can review CSV or Excel datasets from different business areas, detect suspicious patterns, generate evidence-backed findings, assign each question to a reviewer and create a response loop before the dataset is trusted as an input for decisions.",
           "AI assistants such as ChatGPT, Claude, Gemini or Microsoft Copilot can complement the workflow by helping draft sharper challenge questions, summarise reviewer answers and convert validated findings into management-ready scenario commentary."
         ],
         automationOpportunity: [
@@ -2145,12 +2145,12 @@ const areas = [
           "A stronger decision trail showing which datasets were reviewed, which risks were identified, which owners responded and which assumptions are safe enough to use."
         ],
         opportunity: "Data challenge layer for strategic scenario analysis",
-        use_case: "Data Challenger reviews high-value business datasets such as churn, pricing, campaigns, pipeline, product usage, attrition or margin data, flags weak signals or unusual patterns, assigns challenge questions to reviewers and captures responses before the scenario is finalised.",
+        use_case: "Data Challenger reviews high-value business datasets such as HR employee turnover, logistics delivery times, accounting travel expenses, churn, pricing, campaigns, pipeline or product usage, flags weak signals or unusual patterns, assigns challenge questions to reviewers and captures responses before the scenario is finalised.",
         impact: "More credible scenarios, stronger evidence behind strategic decisions and better business-owner accountability for the data that drives the story.",
         proposalTasks: [
           "Built the Data Challenger Flask prototype as an open-source review workflow for CSV and Excel files.",
-          "Created auto-detection logic for columns such as dates, amounts, categories and HR-specific fields.",
-          "Added an HR turnover domain pack as the first example of a challengeable business dataset, covering attrition, overtime, early leavers, salary, tenure and department-level hotspots.",
+          "Created auto-detection logic for columns such as dates, amounts, categories, people fields, operational timings and expense values.",
+          "Added three example challenge domains: HR employee turnover, Logistics delivery times and Accounting travel expenses.",
           "Created a reviewer master-data file with routing rules so findings can be assigned to named owners.",
           "Added tokenised response links so each reviewer can answer a specific challenge question.",
           "Added PDF export so the team can retain the data challenge trail with the final scenario or management pack.",
