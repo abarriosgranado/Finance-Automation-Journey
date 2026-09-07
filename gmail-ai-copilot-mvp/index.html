@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MailBuddy MVP</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Colas IA">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">AI</span>
+          <div>
+            <h1>MailBuddy</h1>
+            <p>MVP de revisión</p>
+          </div>
+        </div>
+
+        <nav class="queue-nav" aria-label="Vistas">
+          <button class="nav-item active" data-view="drafts">
+            <span>Borradores IA</span>
+            <strong id="draftCount">0</strong>
+          </button>
+          <button class="nav-item" data-view="summaries">
+            <span>Resúmenes</span>
+            <strong id="summaryCount">0</strong>
+          </button>
+          <button class="nav-item" data-view="spam">
+            <span>Archivados spam</span>
+            <strong id="spamCount">0</strong>
+          </button>
+        </nav>
+
+        <section class="labels" aria-label="Etiquetas Gmail">
+          <h2>Etiquetas Gmail</h2>
+          <p><span class="label-dot draft"></span>AI / Draft Ready</p>
+          <p><span class="label-dot summary"></span>AI / Summary</p>
+          <p><span class="label-dot spam"></span>AI / Spam</p>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Flujo principal</p>
+            <h2 id="viewTitle">Borradores IA</h2>
+          </div>
+          <button class="primary-action" id="processButton" type="button">
+            Leer emails nuevos
+          </button>
+        </header>
+
+        <section class="metrics" aria-label="Resumen operativo">
+          <article>
+            <span id="processedCount">0</span>
+            <p>hilos procesados</p>
+          </article>
+          <article>
+            <span id="readCount">0</span>
+            <p>marcados como leídos</p>
+          </article>
+          <article>
+            <span id="reviewedCount">0</span>
+            <p>cerrados por ti</p>
+          </article>
+        </section>
+
+        <div class="content-grid">
+          <section class="thread-list" aria-label="Hilos">
+            <div class="list-header">
+              <h3 id="listTitle">AI / Draft Ready</h3>
+              <p id="listHint">Borradores pendientes de revisar antes de enviar.</p>
+            </div>
+            <div id="threadList" class="thread-items"></div>
+          </section>
+
+          <section class="review-panel" aria-label="Panel lateral IA">
+            <div id="emptyPanel" class="empty-panel">
+              <h3>Sin hilo seleccionado</h3>
+              <p>Elige un hilo de la cola o procesa emails nuevos.</p>
+            </div>
+
+            <article id="reviewCard" class="review-card hidden">
+              <div class="card-header">
+                <div>
+                  <p id="cardMeta" class="eyebrow">Email</p>
+                  <h3 id="cardSubject"></h3>
+                </div>
+                <span id="cardLabel" class="status-label"></span>
+              </div>
+
+              <dl class="email-meta">
+                <div>
+                  <dt>De</dt>
+                  <dd id="cardSender"></dd>
+                </div>
+                <div>
+                  <dt>Estado</dt>
+                  <dd id="cardReadState"></dd>
+                </div>
+              </dl>
+
+              <section class="panel-section">
+                <h4>Resumen IA</h4>
+                <p id="cardSummary"></p>
+              </section>
+
+              <section id="agreementBlock" class="panel-section">
+                <h4>Qué se acordó</h4>
+                <p id="cardAgreements"></p>
+              </section>
+
+              <section id="nextBlock" class="panel-section">
+                <h4>Próximos pasos</h4>
+                <p id="cardNextSteps"></p>
+              </section>
+
+              <section id="draftBlock" class="panel-section draft-block hidden">
+                <h4>Borrador sugerido</h4>
+                <textarea id="draftText" aria-label="Borrador sugerido"></textarea>
+              </section>
+
+              <section id="promptBlock" class="panel-section prompt-block hidden">
+                <label for="promptInput">Guía para la IA</label>
+                <textarea
+                  id="promptInput"
+                  placeholder="Ejemplo: dile que use la V2 y contesta de manera educada."
+                ></textarea>
+              </section>
+
+              <div class="action-row" id="actionRow"></div>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js?v=5"></script>
+  </body>
+</html>
