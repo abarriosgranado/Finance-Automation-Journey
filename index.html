@@ -2124,8 +2124,8 @@ const areas = [
       {
         pain: "Weak scenario analysis",
         manualDescription: [
-          "Scenario analysis is often only as strong as the dataset behind it. A company may be modelling growth, retention, pricing, campaign ROI, conversion, sales pipeline, customer behaviour, product adoption or workforce capacity, but the data feeding those decisions is rarely challenged in a structured way before it becomes a management story.",
-          "The most valuable datasets are usually the ones closest to commercial decisions: customers at risk of churn, accounts likely to expand, campaigns that look profitable, products with changing usage patterns, regions with margin pressure, leads moving through the funnel, or teams where attrition could affect delivery. These datasets can create powerful scenarios, but they can also mislead if outliers, missing fields, duplicated records, weak segments or unexplained movements are not challenged first.",
+          "Scenario analysis is often only as strong as the dataset behind it. A company may be modelling growth, retention, pricing, campaign ROI, conversion, sales pipeline, customer behaviour, product adoption, workforce capacity or operational performance, but the data feeding those decisions is rarely challenged in a structured way before it becomes a management story.",
+          "The same approach can be applied to many signals that sell a clearer business story: employee turnover, payment delays, inventory stockouts, delivery times, hotel cancellations, support tickets, conversion rates, demand patterns, customer churn, campaign performance, product usage, supplier risk or margin leakage. These datasets can create powerful scenarios, but they can also mislead if outliers, missing fields, duplicated records, weak segments or unexplained movements are not challenged first.",
           "As a result, scenario analysis can become a confident narrative built on untested data. Management sees a base case, upside case or downside case, but may not know which assumptions were properly questioned, which business owner validated the evidence, and which risks are still hidden inside the dataset."
         ],
         technologyTools: [
@@ -2134,7 +2134,7 @@ const areas = [
           "AI assistants such as ChatGPT, Claude, Gemini or Microsoft Copilot can complement the workflow by helping draft sharper challenge questions, summarise reviewer answers and convert validated findings into management-ready scenario commentary."
         ],
         automationOpportunity: [
-          "Use Data Challenger as a pre-scenario challenge workflow for high-value business datasets. Instead of starting with a model, the team starts by uploading the dataset that will drive the scenario: customer churn, pricing, campaign performance, pipeline conversion, employee attrition, product usage, supplier risk, margin leakage or any other dataset that could change a strategic decision.",
+          "Use Data Challenger as a pre-scenario challenge workflow for high-value business datasets. Instead of starting with a model, the team starts by uploading the dataset that will drive the scenario: churn, pricing, campaigns, pipeline conversion, employee turnover, payment delays, stockouts, delivery times, hotel cancellations, support tickets, demand patterns, product usage, supplier risk or any other signal that could change a strategic decision.",
           "The tool converts data quality signals and unusual patterns into business questions. For example, Sales can be asked why a region has a sudden pipeline drop, Marketing can validate whether a campaign's conversion rate is real or distorted by incomplete tracking, HR can explain attrition hotspots, and Product can confirm whether a usage spike is adoption or a data issue.",
           "The workflow turns scenario analysis into a challenge-led decision journey: upload the data, identify weak signals, route questions to owners, collect responses and export a PDF trail before the dataset feeds the base, upside or downside case. This makes the final scenario more credible because the assumptions have been tested before the story is written.",
           "Data Challenger does not replace planning tools, dashboards or financial models. It makes them stronger by challenging the commercial and operational evidence underneath them."
@@ -2158,11 +2158,11 @@ const areas = [
         ],
         proposalResources: [
           {
-            label: "Data Challenger - source code on GitHub",
-            href: "https://github.com/abarriosgranado/Data_Challenger",
+            label: "Data Challenger - live web app",
+            href: "https://data-challenger.onrender.com/",
             type: "app",
-            badge: "View code",
-            description: "Flask prototype for uploading CSV or Excel data, generating evidence-backed challenge questions, assigning reviewers and exporting the review trail."
+            badge: "Open app",
+            description: "Live Flask app for uploading CSV or Excel data, generating evidence-backed challenge questions, assigning reviewers and exporting the review trail."
           }
         ]
       }
