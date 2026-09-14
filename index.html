@@ -2095,30 +2095,6 @@ const areas = [
             label: "<span class=\"output-page-highlight\">Budget Intelligence: Planning Workspace</span>",
             anchor: "manual-budget-preparation-workflow",
             description: "A Streamlit MVP that turns prior budget and actuals YTD into controlled department workspaces, FP&A review, challenge questions and a downloadable proposed budget."
-          },
-          {
-            label: "Department Submission Workspaces",
-            anchor: "manual-budget-department-workspaces",
-            locked: true,
-            description: "Structured owner-facing workspaces for department assumptions, planning drivers, comments and budget submissions."
-          },
-          {
-            label: "FP&A Review and Challenge",
-            anchor: "manual-budget-fpa-review",
-            locked: true,
-            description: "Review layer for proposal validation, challenge questions, approval decisions and rejected-submission loops."
-          },
-          {
-            label: "Consolidated Budget Proposal",
-            anchor: "manual-budget-consolidated-proposal",
-            locked: true,
-            description: "Final consolidated view of approved department budgets, movements, comments and export-ready outputs."
-          },
-          {
-            label: "Downloadable Files",
-            anchor: "manual-budget-downloadable-files",
-            locked: true,
-            description: "Excel exports, sample evidence files, process visuals and supporting documentation."
           }
         ],
         outputsTitle: "Outputs / examples",
@@ -2130,6 +2106,8 @@ const areas = [
               "Budget Intelligence unlocks the manual budget preparation journey as a working Streamlit MVP. The app starts from two controlled evidence sets: the approved annual budget from the previous year and actuals YTD by department, cost center, account and category.",
               "The workflow normalizes those inputs, builds a run-rate baseline, flags lines that need challenge, generates department-specific questions, captures owner answers and exports a proposed budget. This turns a spreadsheet-driven process into a guided planning workflow with clearer ownership and a stronger review trail.",
               "The app also includes FP&A review steps. Department proposals can be approved or rejected, rejected items return to the workspace for revision, and the challenge view helps FP&A compare requested changes against prior budget and actual run-rate evidence.",
+              "At the end of the process, FP&A can download an Excel copy of the budget for review and documentation. This Excel file contains the approved prior-year budget, actuals YTD, run-rate baseline, department budget proposal, variance versus prior budget and run-rate, department comments, AI challenge outputs, FP&A approval status and final FP&A comments.",
+              "FP&A can also download a CSV file prepared for upload into any ERP as the final approved budget. The CSV is designed as a clean system-load file with the core budget dimensions and values needed by an ERP, such as department, cost center, account, category, period or month, approved budget amount and final approval status.",
               "The current version is intentionally an MVP: it proves the journey with a lightweight open-source app while keeping the logic transparent enough to inspect, improve and later connect to a richer FP&A platform or data stack."
             ],
             downloads: [
@@ -2142,38 +2120,6 @@ const areas = [
               }
             ],
             prompt: "Create a Streamlit MVP for a budget preparation workflow. Start from approved prior-year budget and actuals YTD evidence, normalize the inputs, build a run-rate baseline, create department workspaces, generate budget challenge questions, capture department owner answers, let FP&A approve or reject submissions, send rejected submissions back for changes, and export a consolidated proposed budget. Keep the workflow controlled, auditable and simple enough for a finance team to review."
-          },
-          {
-            id: "manual-budget-department-workspaces",
-            title: "Department Submission Workspaces",
-            paragraphs: [
-              "This output would expand the owner-facing planning workspace. Each department would receive a structured view of prior budget, actuals YTD, run-rate baseline, open planning questions, requested adjustments and required comments.",
-              "The goal is to reduce free-form spreadsheet submissions and make each owner answer the same kind of budget questions in a comparable format."
-            ]
-          },
-          {
-            id: "manual-budget-fpa-review",
-            title: "FP&A Review and Challenge",
-            paragraphs: [
-              "This output would strengthen the FP&A review layer by making challenge questions, owner responses, approval status and rejection reasons visible in one place.",
-              "The purpose is to move from email-based budget challenge to a repeatable review loop where every material movement has a clear owner, explanation and decision."
-            ]
-          },
-          {
-            id: "manual-budget-consolidated-proposal",
-            title: "Consolidated Budget Proposal",
-            paragraphs: [
-              "This output would present the final proposed budget after department submissions and FP&A review. It can include approved budget, actuals YTD, run-rate baseline, requested budget, variances and comments by department, cost center, account and category.",
-              "The goal is to make the final budget easier to inspect, challenge and export without rebuilding a separate consolidation file."
-            ]
-          },
-          {
-            id: "manual-budget-downloadable-files",
-            title: "Downloadable Files",
-            paragraphs: [
-              "This output would group the reusable files generated through the manual budget preparation journey, including Excel exports, sample evidence files, process visuals and supporting documentation.",
-              "The goal is to make the budget preparation assets easy to access, reuse and improve across cycles."
-            ]
           }
         ]
       },
