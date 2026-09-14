@@ -537,6 +537,11 @@ html {
   color: #111827;
 }
 
+.proposal-list li.proposal-app-item {
+  list-style: none;
+  margin-left: -18px;
+}
+
 .proposal-links {
   display: grid;
   gap: 8px;
@@ -2069,7 +2074,7 @@ const areas = [
           "AI assistants such as ChatGPT, Microsoft Copilot, Gemini or Claude can support budget challenge questions, assumption review, variance explanations, department-specific guidance and first-draft FP&A commentary, but the final budget still needs ownership, controls and approval discipline."
         ],
         automationOpportunity: [
-          "Create a reusable budget preparation workflow that starts from controlled evidence: approved prior-year budget, actuals YTD, account structures, departments, cost centers and planning top-down assumptions. Instead of asking every owner to rebuild a spreadsheet, the workflow creates department workspaces with prefilled baselines and structured input fields.",
+          "Create a reusable budget preparation workflow that starts from controlled evidence: approved prior-year budget, actuals YTD and an initial base configuration defined by FP&A, including departments, cost centers, account structures and planning top-down assumptions. Instead of asking every owner to rebuild a spreadsheet, the workflow creates department workspaces with prefilled baselines and structured input fields.",
           "The workflow should guide each department through the same planning logic: review the current baseline, answer an intelligent interview with questions related to its area, explain changes, adjust drivers, submit the proposal and capture a clear owner comment. For example, a people-cost area can be asked for current headcount, expected future headcount, planned hires, exits, salary increases and role changes; a commercial area can be asked for expected clients, projects, volumes, pricing and conversion assumptions. In Step 4, AI challenges the numbers submitted by the person preparing the department budget, comparing actuals against the budget proposal, prior-year budget, run-rate baseline and planning top-down guidelines to identify mismatches, unsupported increases or assumptions that need explanation. FP&A then performs the final review and approves or rejects the submission with comments before exporting a consolidated proposed budget.",
           "This approach allows FP&A teams to move from manual template collection to a controlled budget journey where data, assumptions, comments, approvals and final outputs are connected in one process."
         ],
@@ -2087,13 +2092,14 @@ const areas = [
           "Added department workspaces so budget owners can review baselines, answer planning questions and submit proposals.",
           "Added FP&A review logic to approve or reject department submissions and send rejected items back for changes.",
           "Added a challenge layer that compares proposals against prior budget and run-rate logic.",
-          "Added export capability for the proposed budget so the final output can be reviewed outside the app.",
-          "Prepared the app for public deployment from GitHub with a root requirements.txt file."
+          "Added export capability for the proposed budget so the final output can be reviewed outside the app."
         ],
         outputsExamples: [
           {
-            label: "<span class=\"output-page-highlight\">Budget Intelligence: Planning Workspace</span>",
+            label: "Budget Intelligence: Planning Workspace",
             href: "https://budget-intelligence.streamlit.app/",
+            type: "app",
+            badge: "Live demo",
             description: "A Streamlit MVP that turns prior budget and actuals YTD into controlled department workspaces, FP&A review, challenge questions and a downloadable proposed budget."
           }
         ],
@@ -3169,6 +3175,9 @@ function renderPain(index, options = {}) {
   const renderParagraphs = paragraphs => paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
   const renderOutput = (output, outputIndex) => {
     if (typeof output !== "string") {
+      if (output.type === "app") {
+        return `<li class="proposal-app-item">${renderProposalResource(output)}</li>`;
+      }
       const outputLink = output.anchor
         ? `<a class="output-page-button" href="#${output.anchor}" data-output-index="${outputIndex}">${output.label}</a>`
         : "";
