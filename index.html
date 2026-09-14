@@ -2058,9 +2058,124 @@ const areas = [
       },
       {
         pain: "Manual budget preparation",
+        manualDescription: [
+          "Budget preparation is often coordinated manually through spreadsheet templates, email requests, copied prior-year files, separate assumption tabs and offline conversations with department owners. FP&A spends significant time preparing templates, collecting submissions, checking that each department used the correct version and consolidating files into one proposed budget.",
+          "Although the budget cycle is recurring, the process often depends on individual spreadsheet discipline and manual follow-up. Owners may submit incomplete templates, use inconsistent categories, overwrite formulas, add unsupported assumptions or send updated versions after FP&A has already started consolidating the budget.",
+          "As a result, budget preparation becomes slow, difficult to control and hard to challenge. FP&A spends too much time chasing inputs, reconciling files and rebuilding the consolidation, and not enough time reviewing assumptions, understanding drivers and helping the business make better resource decisions."
+        ],
+        technologyTools: [
+          "Several FP&A and EPM platforms can support structured budget preparation. Pigment, Abacum, Anaplan, Workday Adaptive Planning, Planful, Board and Vena are relevant options for teams that need driver-based planning, workflow, version control, approvals, scenario modelling and controlled consolidation.",
+          "For lighter or earlier-stage teams, Excel, Google Sheets, Streamlit, Power BI, Tableau, Looker Studio, Airtable, n8n, Zapier or Make can be combined to create a more controlled planning workflow without immediately replacing the existing finance stack.",
+          "AI assistants such as ChatGPT, Microsoft Copilot, Gemini or Claude can support budget challenge questions, assumption review, variance explanations, department-specific guidance and first-draft FP&A commentary, but the final budget still needs ownership, controls and approval discipline."
+        ],
+        automationOpportunity: [
+          "Create a reusable budget preparation workflow that starts from controlled evidence: approved prior-year budget, actuals YTD, account structures, departments, cost centers and planning assumptions. Instead of asking every owner to rebuild a spreadsheet, the workflow creates department workspaces with prefilled baselines and structured input fields.",
+          "The workflow should guide each department through the same planning logic: review the current baseline, explain changes, add clients or projects, adjust drivers, submit the proposal and capture a clear owner comment. FP&A then reviews submissions, challenges unusual movements, approves or sends them back for changes and exports a consolidated proposed budget.",
+          "This approach allows FP&A teams to move from manual template collection to a controlled budget journey where data, assumptions, comments, approvals and final outputs are connected in one process."
+        ],
+        expectedImpact: [
+          "Shorter budget preparation cycles, fewer spreadsheet version issues and stronger consistency across department submissions. FP&A can reduce time spent preparing files, chasing owners, checking templates and manually consolidating the budget.",
+          "The solution improves traceability from source evidence to department proposal, FP&A challenge, approval decision and final exported budget, reducing the risk of unsupported assumptions or late version changes.",
+          "Over time, FP&A can spend more time challenging business drivers, comparing budget requests with actual performance and supporting decisions, rather than manually administering the budget cycle."
+        ],
         opportunity: "Automated budget preparation workflow",
         use_case: "Coordinate budget inputs, templates, assumptions, approvals and consolidation in a controlled workflow connected to finance and operational data.",
-        impact: "Shorter budget cycles, fewer version issues and more reliable budget submissions."
+        impact: "Shorter budget cycles, fewer version issues and more reliable budget submissions.",
+        proposalTasks: [
+          "Built Budget Intelligence as a Streamlit MVP for manual budget preparation.",
+          "Created a controlled workflow using approved budget and actuals YTD as the starting evidence.",
+          "Added department workspaces so budget owners can review baselines, answer planning questions and submit proposals.",
+          "Added FP&A review logic to approve or reject department submissions and send rejected items back for changes.",
+          "Added a challenge layer that compares proposals against prior budget and run-rate logic.",
+          "Added export capability for the proposed budget so the final output can be reviewed outside the app.",
+          "Prepared the app for public deployment from GitHub with a root requirements.txt file."
+        ],
+        outputsExamples: [
+          {
+            label: "<span class=\"output-page-highlight\">Budget Intelligence: Planning Workspace</span>",
+            anchor: "manual-budget-preparation-workflow",
+            description: "A Streamlit MVP that turns prior budget and actuals YTD into controlled department workspaces, FP&A review, challenge questions and a downloadable proposed budget."
+          },
+          {
+            label: "Department Submission Workspaces",
+            anchor: "manual-budget-department-workspaces",
+            locked: true,
+            description: "Structured owner-facing workspaces for department assumptions, planning drivers, comments and budget submissions."
+          },
+          {
+            label: "FP&A Review and Challenge",
+            anchor: "manual-budget-fpa-review",
+            locked: true,
+            description: "Review layer for proposal validation, challenge questions, approval decisions and rejected-submission loops."
+          },
+          {
+            label: "Consolidated Budget Proposal",
+            anchor: "manual-budget-consolidated-proposal",
+            locked: true,
+            description: "Final consolidated view of approved department budgets, movements, comments and export-ready outputs."
+          },
+          {
+            label: "Downloadable Files",
+            anchor: "manual-budget-downloadable-files",
+            locked: true,
+            description: "Excel exports, sample evidence files, process visuals and supporting documentation."
+          }
+        ],
+        outputsTitle: "Outputs / examples",
+        outputPages: [
+          {
+            id: "manual-budget-preparation-workflow",
+            title: "Budget Intelligence",
+            paragraphs: [
+              "Budget Intelligence unlocks the manual budget preparation journey as a working Streamlit MVP. The app starts from two controlled evidence sets: the approved annual budget from the previous year and actuals YTD by department, cost center, account and category.",
+              "The workflow normalizes those inputs, builds a run-rate baseline, flags lines that need challenge, generates department-specific questions, captures owner answers and exports a proposed budget. This turns a spreadsheet-driven process into a guided planning workflow with clearer ownership and a stronger review trail.",
+              "The app also includes FP&A review steps. Department proposals can be approved or rejected, rejected items return to the workspace for revision, and the challenge view helps FP&A compare requested changes against prior budget and actual run-rate evidence.",
+              "The current version is intentionally an MVP: it proves the journey with a lightweight open-source app while keeping the logic transparent enough to inspect, improve and later connect to a richer FP&A platform or data stack."
+            ],
+            downloads: [
+              {
+                label: "Budget Intelligence - source code on GitHub",
+                href: "https://github.com/abarriosgranado/Budget-Intelligence",
+                type: "app",
+                badge: "View code",
+                description: "Open-source Streamlit MVP for controlled budget preparation, FP&A review and proposal export."
+              }
+            ],
+            prompt: "Create a Streamlit MVP for a budget preparation workflow. Start from approved prior-year budget and actuals YTD evidence, normalize the inputs, build a run-rate baseline, create department workspaces, generate budget challenge questions, capture department owner answers, let FP&A approve or reject submissions, send rejected submissions back for changes, and export a consolidated proposed budget. Keep the workflow controlled, auditable and simple enough for a finance team to review."
+          },
+          {
+            id: "manual-budget-department-workspaces",
+            title: "Department Submission Workspaces",
+            paragraphs: [
+              "This output would expand the owner-facing planning workspace. Each department would receive a structured view of prior budget, actuals YTD, run-rate baseline, open planning questions, requested adjustments and required comments.",
+              "The goal is to reduce free-form spreadsheet submissions and make each owner answer the same kind of budget questions in a comparable format."
+            ]
+          },
+          {
+            id: "manual-budget-fpa-review",
+            title: "FP&A Review and Challenge",
+            paragraphs: [
+              "This output would strengthen the FP&A review layer by making challenge questions, owner responses, approval status and rejection reasons visible in one place.",
+              "The purpose is to move from email-based budget challenge to a repeatable review loop where every material movement has a clear owner, explanation and decision."
+            ]
+          },
+          {
+            id: "manual-budget-consolidated-proposal",
+            title: "Consolidated Budget Proposal",
+            paragraphs: [
+              "This output would present the final proposed budget after department submissions and FP&A review. It can include approved budget, actuals YTD, run-rate baseline, requested budget, variances and comments by department, cost center, account and category.",
+              "The goal is to make the final budget easier to inspect, challenge and export without rebuilding a separate consolidation file."
+            ]
+          },
+          {
+            id: "manual-budget-downloadable-files",
+            title: "Downloadable Files",
+            paragraphs: [
+              "This output would group the reusable files generated through the manual budget preparation journey, including Excel exports, sample evidence files, process visuals and supporting documentation.",
+              "The goal is to make the budget preparation assets easy to access, reuse and improve across cycles."
+            ]
+          }
+        ]
       },
       {
         pain: "Manual forecasting",
@@ -2907,6 +3022,7 @@ const unlockedManualStruggles = new Set([
   "Unstructured task management",
   "No clear delivery calendar",
   "Manual executive reporting",
+  "Manual budget preparation",
   "Manual investment case preparation",
   "Delayed variance analysis",
   "Weak scenario analysis",
